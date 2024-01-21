@@ -222,8 +222,7 @@ class Order(models.Model):
     # payment_id = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3)
-    payment_status = models.CharField(
-        max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
+    payment_status = models.CharField(max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
     timestamp = models.DateTimeField(auto_now_add=True)
     items = models.ManyToManyField(Product)  # Use the correct model name 'Book'
 
