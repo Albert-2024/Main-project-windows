@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Electrocom</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link rel="stylesheet" type="text/css" href='{% static "new_style/css/bootstrap.min.css"%} '>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap"
+    rel="stylesheet">
+  <!-- script
+    ================================================== -->
+  <script src='{% static "new_style/js/modernizr.js" %}'></script>
+  <link rel="stylesheet" type="text/css" href='{% static "new_style/style.css"%}'>
+
+</head>
+
+
+<footer id="footer" class="overflow-hidden bg-black text-white mt-2">
+    <div class="container "> 
+      <div class="row mt-5">
+        <div class="footer-top-area">
+          <div class="row d-flex flex-wrap justify-content-between">
+            <div class="col-lg-3 col-sm-6 pb-3">
+              <div class="footer-menu">
+                <img src='{% static "assets/img/logo2.png" %}' alt="logo" width="45%" class="mt-3">
+                <p class="text-white">Nisi, purus vitae, ultrices nunc. Sit ac sit suscipit hendrerit. Gravida massa volutpat aenean odio
+                  erat nullam fringilla.</p>
+                <div class="social-links">
+                  <ul class="d-flex list-unstyled">
+                    <li>
+                      <a href="#">
+                        <svg class="facebook">
+                          <use xlink:href="#facebook" />
+                        </svg>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <svg class="instagram">
+                          <use xlink:href="#instagram" />
+                        </svg>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <svg class="twitter">
+                          <use xlink:href="#twitter" />
+                        </svg>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <svg class="linkedin">
+                          <use xlink:href="#linkedin" />
+                        </svg>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <svg class="youtube">
+                          <use xlink:href="#youtube" />
+                        </svg>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-sm-6 pb-3">
+              <div class="footer-menu text-uppercase text-white">
+                <h5 class="widget-title pb-2">Quick Links</h5>
+                <ul class="menu-list list-unstyled text-uppercase " >
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Home</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">About</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#"  style="color:white">Shop</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Blogs</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Contact</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 pb-3">
+              <div class="footer-menu text-uppercase">
+                <h5 class="widget-title pb-2">Help & Info Help</h5>
+                <ul class="menu-list list-unstyled">
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Track Your Order</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Returns Policies</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Shipping + Delivery</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Contact Us</a>
+                  </li>
+                  <li class="menu-item pb-2">
+                    <a href="#" style="color:white">Faqs</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 pb-3">
+              <div class="footer-menu contact-item">
+                <h5 class="widget-title text-uppercase pb-2">Contact Us</h5>
+                <p  style="color:white">Do you have any queries or suggestions? <a  style="color:white" href="mailto:">yourinfo@gmail.com</a>
+                </p>
+                <p style="color:white">If you need support? Just give us a call. <a style="color:white" href="">+91 944 118 7633</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </footer>
+  <div id="footer-bottom" class=" bg-black">
+    <div class="container">
+      <div class="row d-flex flex-wrap justify-content-between">
+        <div class="col-md-4 col-sm-6">
+          <div class="Shipping d-flex">
+            <p style="color:white">We ship with:</p>
+            <div class="card-wrap ps-2">
+              <img src='{% static "new_style/images/dhl.png" %}' alt="visa">
+              <img src='{% static "new_style/images/shippingcard.png" %}' alt="mastercard">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="payment-method d-flex">
+            <p  style="color:white">Payment options:</p>
+            <div class="card-wrap ps-2">
+              <img src='{% static "new_style/images/visa.jpg" %}' alt="visa">
+              <img src='{% static "new_style/images/mastercard.jpg" %}' alt="mastercard">
+              <img src='{% static "new_style/images/paypal.jpg" %}' alt="paypal">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="copyright">
+            <p style="color:white">© Copyright 2024 Electrocom. <br />
+               Design by <a  style="color:white" href="">Albert Devasia</a>
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <script src='{% static "new_style/js/jquery-1.11.0.min.js" %}'></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+  <script type="text/javascript" src='{% static "new_style/js/bootstrap.bundle.min.js" %}'></script>
+  <script type="text/javascript" src='{% static "new_style/js/plugins.js" %}'></script>
+  <script type="text/javascript" src='{% static "new_style/js/script.js" %}'></script>
+
+
+  <script>
+
+  </script>
+
+</body>
+
+</html>

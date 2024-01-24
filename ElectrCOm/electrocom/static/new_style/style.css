@@ -81,7 +81,7 @@ body {
 }
 p {
   font-size: 1.2em;
-  color: var(--gray-color-500);
+  color: var(--gray-color-800);
 }
 ul.inner-list li {
    font-size: 1.2em;
@@ -675,6 +675,22 @@ h3.cart-title {
   }
 }
 
+.img-fluid{
+  width: 315px !important;
+  height: 418px !important;
+}
+.img-fluidnew{
+  width: 100%;
+  height: 418px !important;
+}
+
+.customImageFluid{
+
+  height: 90vh;
+  max-width: 100%;
+
+}
+
 /* 3. Icon Box - Company Services
 /*----------------------------------------------*/
 .icon-box .icon-box-icon svg {
@@ -1018,4 +1034,8 @@ figure.instagram-item img.insta-image {
 .post-navigation:hover svg,
 .post-navigation:focus svg {
     fill: var(--primary-color);
+}
+
+.logo{
+  width: 55% !important;
 }
