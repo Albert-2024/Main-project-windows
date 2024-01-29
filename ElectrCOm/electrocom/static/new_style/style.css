@@ -1039,3 +1039,10 @@ figure.instagram-item img.insta-image {
 .logo{
   width: 55% !important;
 }
+
+.search-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
