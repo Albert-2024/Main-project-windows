@@ -1,4 +1,5 @@
 from urllib import request
+from django.conf import settings
 from django.db import models
 from django.db import migrations
 
@@ -222,8 +223,7 @@ class Order(models.Model):
     # payment_id = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3)
-    payment_status = models.CharField(
-        max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
+    payment_status = models.CharField(max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
     timestamp = models.DateTimeField(auto_now_add=True)
     items = models.ManyToManyField(Product)  # Use the correct model name 'Book'
 
@@ -246,3 +246,14 @@ class Order(models.Model):
     
 #     def carttotal(self):
 #         self.cartstock = self.product.stock
+
+class Book(models.Model):
+    title=models.CharField(max_length=100,unique=True)
+    slug = models.SlugField(unique=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    description = models.TextField()
+    authors = models.ManyToManyField(settings.AUTH_USER_MODEL)
+
+    def __unicode__(self):
+        return self.title
+    

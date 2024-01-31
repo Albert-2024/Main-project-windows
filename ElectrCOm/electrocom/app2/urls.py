@@ -1,8 +1,10 @@
+from django import urls
 from django.contrib import admin
 # from app2 import views
 from django.conf import settings
 # from django.contrib import admin
 from django.urls import path, include
+import urllib3
 from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
@@ -56,6 +58,7 @@ urlpatterns = [
     path('decrease_item/<int:item_id>/',views.decrease_item,name='decrease_item'),
     path('payment/',views.payment,name='payment'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    path('search/', include('haystack.urls')),
     
     
     

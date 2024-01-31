@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <style>
         .fixed-card{
             width: 1100px;
@@ -26,90 +26,29 @@
     <!-- Bootstrap CSS (Optional) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
     <!-- MDB -->
-    <link rel="stylesheet" type='text/css' href="{% static 'home.css' %}">
 </head>
 <body>
     <div class="main">
-        <nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #607D8B">
-          <div class="container-fluid">
-              <div class="d-flex align-items-left">
-                  <a class="navbar-brand" href="#">ElectroCOm</a>
-              </div>
-              <div class="d-flex align-items-center mx-auto">
-                  <form class="form-inline my-2 my-lg-0">
-                      <div class="input-group">
-                          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                          <button class="btn btn-outline-success" type="submit">
-                              <i class="fas fa-search"></i>
-                          </button>
-                      </div>
-                  </form>
-              </div>
-              <div class="d-flex p-2">
-                  <ul class="navbar-nav me-6 ">
-                      <li class="nav-item pe-1">
-                          <a class="nav-link active me-3" aria-current="page" href="http://127.0.0.1:8000/">Home</a>
-                      </li>
-                      
-                      {% if user.is_authenticated %}
-                      <li class="nav-item mt-2 pe-1">
-                          <a href="{% url "wishlist" %}" class="text-white text-decoration-none me-3">
-                              <i class="bi bi-heart"></i>
-                          </a>
-                      </li> 
-                      <li class="nav-item  mt-2 pe-1">
-                          <a href="{% url 'cart' %}" class=" text-white text-decoration-none me-3">
-                          <i class="bi bi-cart3"></i></a>
-                      </li>
-                      {% endif %}
-                          <!-- Link -->
-                          <li class="nav-item dropdown pe-1">
-                              <a class="nav-link text-white" id="products" href="{% url 'allproducts' %}" role="button">
-                                  Products
-                              </a>
-      
-                          </li>
-                      
-      
-                          {% if not user.is_authenticated %}
-                          <li class="nav-item pe-1">
-                              <a class="nav-link" id="cust_login" href="{% url 'login' %}">Login</a>
-                          </li>
-                        {% else %}
-                          <li class="nav-item dropdown pe-1">
-                              <a href="#" id="drop" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                {{user.first_name}}
-                              </a>
-                        
-                              <div class="dropdown-menu dropdown-menu-end pe-1">
-                                  <a href="{% url 'profile' %}" id="profile" class="dropdown-item nav-linkd">My Profile</a>
-                                  <a href="{% url 'sellerreg' %}" class="dropdown-item nav-linkd text-decoration-none">Become a seller</a>
-                                  <a href="{% url 'userLogout' %}" class="dropdown-item nav-linkd">Logout</a>
-                              </div>
-                          </li>
-                        {% endif %}
-                  </ul>
-              </div>
-          </div>
-      </nav>
+        <nav class="navbar"> 
+            <div class="navbar mt-4">
+             {%include 'header.html' %}
             </div>
-      
-  
+        </nav>
 
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <h3 class="text-center">Products</h3>
-        <div class="row">
-            {% for i in data %}
-            <div class="col-md-12 mt-2">
-              <div class="card d-flex flex-row fixed-card" style="height: 40vh; overflow: hidden;">
-                <div class="p-3 col-md-3">
-                  <img src="{{ i.image1.url }}" class="card-img pt-1" style="height: 100%; width: 100%; object-fit: cover;" alt="Book Cover">
-                </div>
-                <div class="card-body col-md-9">
-                  <a href="{% url 'product_detail' i.id %}" style="text-decoration: none; color: #000;">
-                    <h4 class="card-title mt-4">{{ i.name }}</h4>
-                    <p class="card-text"><strong>Product Name:</strong> {{ i.product_name }}</p>
-                    <p class="card-text text-italic"><strong>Brand Name:</strong> {{ i.brand_name }}</p>
+            <div class="row" >
+                {% for i in data %}
+                <div class="col-md-12 mt-3 center">
+                <div class="card d-flex flex-row fixed-card shadow border-rounded  " style="height: 40vh; overflow: hidden; ">
+                    <div class="p-3 col-md-3">
+                    <img src="{{ i.image1.url }}" class="card-img pt-1" style="height: 100%; width: 100%; object-fit: cover;" alt="Book Cover">
+                    </div>
+                    <div class="card-body col-md-9">
+                    <a href="{% url 'product_detail' i.id %}" style="text-decoration: none; color: #000;">
+                        <h4 class="card-title mt-4">{{ i.name }}</h4>
+                        <p class="card-text"><strong>Product Name:</strong> {{ i.product_name }}</p>
+                    <p class="card-text "><strong>Brand Name:</strong> {{ i.brand_name }}</p>
                     <p class="card-text">INR {{ i.price }}</p>
                     <a href="{% url 'addtocart' i.id %}">
                       <button id="cart" class="btn btn-primary">Add to Cart</button>
@@ -127,7 +66,8 @@
           {% endfor %}
         </div>
     </div>
-
+    {%include 'footer.html' %}
+</div>
     
 </body>
 </html>
