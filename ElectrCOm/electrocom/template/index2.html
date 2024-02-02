@@ -7,26 +7,24 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href='{% static "new_style/css/bootstrap.min.css"%}' />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" type="text/css" href='{% static "new_style/css/bootstrap.min.css"%} '>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap"
-    rel="stylesheet">
-  <!-- script
-    ================================================== -->
-  <script src='{% static "new_style/js/modernizr.js" %}'></script>
-  <link rel="stylesheet" type="text/css" href='{% static "new_style/style.css"%}'>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <script src='{% static "new_style/js/jquery-1.11.0.min.js" %}'></script>
+
+  
+  <link rel="stylesheet" type="text/css" href='{% static "new_style/style.css"%}' /> 
+  
 </head>
 
 <body>
-  {% include 'header.html' %}
-
-  <!-- <header id="header" class="site-header header-scrolled position-fixed text-black bg-light-blue">
-    <nav id="header-nav" class="navbar navbar-expand-lg px-3 mb-3">
+  <header id="header" class="site-header header-scrolled position-fixed text-black bg-light-blue shadow pt-2">
+    <nav id="header-nav" class="navbar navbar-expand-lg px-3 mb-2">
       <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="http://127.0.0.1:8000/">
           <img src='{% static "assets/img/logo2.png" %}' class="logo">
         </a>
         <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas"
@@ -35,18 +33,10 @@
             <use xlink:href="#navbar-icon"></use>
           </svg>
         </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
-          <div class="offcanvas-header px-4 pb-0">
-            <a class="navbar-brand" href="index.html">
-              <img src='{% static "new_style/images/main-logo.png" %}' class="logo">
-            </a>
-            <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close"
-              data-bs-target="#bdNavbar"></button>
-          </div>
           <div class="offcanvas-body">
             <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
               <li class="nav-item">
-                <a class="nav-link me-4 active" href="">Home</a>
+                <a class="nav-link me-4 active" href="http://127.0.0.1:8000/">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link me-4" href="#company-services">Services</a>
@@ -54,16 +44,11 @@
               <li class="nav-item">
                 <a class="nav-link me-4 " href='{% url "allproducts" %}'>
                   Products
-                </a> -->
-                <!-- <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href='{% url "headset" %}'>Headset</a></li>
-                  <li><a class="dropdown-item" href='{% url "speaker" %}'>Speakers</a></li>
-                  <li><a class="dropdown-item" href='{% url "laptop" %}'>Laptop</a></li>
-                  <li><a class="dropdown-item" href='{% url "mobile" %}'>Mobile Phones</a></li>
-                </ul> -->
-              <!-- </li>
+                </a>
+               
+              </li>
               <li class="nav-item">
-                <a class="nav-link me-4" href="#smart-watches">Headphones</a>
+                <a class="nav-link me-4" href="#headphones">Headset</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link me-4" href="#yearly-sale">Sale</a>
@@ -71,60 +56,66 @@
               <li class="nav-item">
                 <a class="nav-link me-4" href="#latest-blog">Blog</a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button"
-                  aria-expanded="false">Pages</a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="about.html" class="dropdown-item">About</a>
-                  </li>
-                  <li>
-                    <a href="blog.html" class="dropdown-item">Blog</a>
-                  </li>
-                  <li>
-                    <a href="shop.html" class="dropdown-item">Shop</a>
-                  </li>
-                  <li>
-                    <a href="cart.html" class="dropdown-item">Cart</a>
-                  </li>
-                  <li>
-                    <a href="checkout.html" class="dropdown-item">Checkout</a>
-                  </li>
-                  <li>
-                    <a href="single-post.html" class="dropdown-item">Single Post</a>
-                  </li>
-                  <li>
-                    <a href="single-product.html" class="dropdown-item">Single Product</a>
-                  </li>
-                  <li>
-                    <a href="contact.html" class="dropdown-item">Contact</a>
-                  </li>
-                </ul>
-              </li>
+             
               <li class="nav-item">
-                <div class="user-items ps-5">
-                  <ul class="d-flex justify-content-end list-unstyled">
-                    <li class="search-item pe-3">
-                      <a href="#" class="search-button">
-                        <svg class="search">
-                          <use xlink:href="#search"></use>
-                        </svg>
+                <div class="user-items ps-3">
+                  <ul class="d-flex flex-row justify-content-end list-unstyled">
+                    <div class="dropdown dropdown-center mt-1">
+                    <a class="fa fa-search pe-3" href="#" role="button" data-bs-toggle="dropdown">
+                      </a>
+                    
+                      <ul class="dropdown-menu dropdown-menu-end ps-1" style="width: 320px;">
+                        <div class="input-group">
+                        <div class="search-row d-flex flex-row ">
+                          <div class="whitespace pe-2">
+                            <li class="whitespace-nowrap" >
+                              <input class="form-control border-end-0 border rounded-pill" style="width: 250px; margin-left: 10px;" type="text" placeholder="search" id="example-search-input">
+                            </li> 
+                          </div>
+                          <div class="search-symbol ps-2 btn">
+                            <div class="fa fa-search">
+
+                            </div>
+                          </div>
+                           
+                          </div>
+                        </div>
+                      </ul>
+                    </div>
+
                       </a>
                     </li>
-                    <li class="pe-3">
-                      <a href="#">
-                        <svg class="user">
-                          <use xlink:href="#user"></use>
-                        </svg>
+                    <li  class="pe-3 mt-1">
+                      <a href="{%url 'cart'%}">
+                        <i class="fa-solid fa-cart-shopping ms-3"></i>
                       </a>
                     </li>
+
                     <li>
-                      <a href="cart.html">
-                        <svg class="cart">
-                          <use xlink:href="#cart"></use>
-                        </svg>
-                      </a>
-                    </li>
+                      <div class="dropdown pe-3 mt-1" >
+                        <a href="" class="dropdown dropdown-toggle" data-bs-toggle="dropdown">
+                          <i class="fa-solid fa-user ms-3 "></i>
+                        </a>
+                        {% if user.is_authenticated %}
+                           {{user.first_name}}
+
+                          <div class="dropdown-menu" style="margin-left: -90px;">
+                            <a href='{% url "profile" %}' class="dropdown-item">Profile</a>
+                            <a href="{% url 'sellerreg' %}" class="dropdown-item nav-linkd text-decoration-none">Become a seller</a>
+                            <a href="{%url 'cart'%}" class="dropdown-item nav-linkd">Cart</a>
+                            <a href="{%url 'wishlist' %}" class="dropdown-item nav-linkd ">Wishlist</a>
+                            <a href="{% url 'userLogout' %}" class="dropdown-item nav-linkd">Logout</a>
+                          </div>
+
+                        {% else %}
+                        <div class="dropdown-menu">
+                          <a href='{%url "login"%}'>Login</a>
+                        </div>
+                        {% endif %}
+
+                      </div>
+                    </li>       
+                  </div>
                   </ul>
                 </div>
               </li>
@@ -133,7 +124,8 @@
         </div>
       </div>
     </nav>
-  </header> -->
+  </header>
+ 
   <section id="billboard" class="position overflow-hidden" style="background-color:#999392 ;">
     <div class="swiper main-swiper">
       <div class="swiper-wrapper">
@@ -725,156 +717,11 @@
     </div>
   </section>
   {%include 'footer.html' %}
-  <!-- <footer id="footer" class="overflow-hidden bg-black text-white mt-2">
-    <div class="container "> 
-      <div class="row mt-5">
-        <div class="footer-top-area">
-          <div class="row d-flex flex-wrap justify-content-between">
-            <div class="col-lg-3 col-sm-6 pb-3">
-              <div class="footer-menu">
-                <img src='{% static "assets/img/logo2.png" %}' alt="logo" width="45%" class="mt-3">
-                <p class="text-white">Nisi, purus vitae, ultrices nunc. Sit ac sit suscipit hendrerit. Gravida massa volutpat aenean odio
-                  erat nullam fringilla.</p>
-                <div class="social-links">
-                  <ul class="d-flex list-unstyled">
-                    <li>
-                      <a href="#">
-                        <svg class="facebook">
-                          <use xlink:href="#facebook" />
-                        </svg>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <svg class="instagram">
-                          <use xlink:href="#instagram" />
-                        </svg>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <svg class="twitter">
-                          <use xlink:href="#twitter" />
-                        </svg>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <svg class="linkedin">
-                          <use xlink:href="#linkedin" />
-                        </svg>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <svg class="youtube">
-                          <use xlink:href="#youtube" />
-                        </svg>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-sm-6 pb-3">
-              <div class="footer-menu text-uppercase text-white">
-                <h5 class="widget-title pb-2">Quick Links</h5>
-                <ul class="menu-list list-unstyled text-uppercase " >
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Home</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">About</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#"  style="color:white">Shop</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Blogs</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Contact</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 pb-3">
-              <div class="footer-menu text-uppercase">
-                <h5 class="widget-title pb-2">Help & Info Help</h5>
-                <ul class="menu-list list-unstyled">
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Track Your Order</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Returns Policies</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Shipping + Delivery</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Contact Us</a>
-                  </li>
-                  <li class="menu-item pb-2">
-                    <a href="#" style="color:white">Faqs</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-lg-3 col-sm-6 pb-3">
-              <div class="footer-menu contact-item">
-                <h5 class="widget-title text-uppercase pb-2">Contact Us</h5>
-                <p  style="color:white">Do you have any queries or suggestions? <a  style="color:white" href="mailto:">yourinfo@gmail.com</a>
-                </p>
-                <p style="color:white">If you need support? Just give us a call. <a style="color:white" href="">+91 944 118 7633</a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr>
-  </footer>
-  <div id="footer-bottom" class=" bg-black">
-    <div class="container">
-      <div class="row d-flex flex-wrap justify-content-between">
-        <div class="col-md-4 col-sm-6">
-          <div class="Shipping d-flex">
-            <p style="color:white">We ship with:</p>
-            <div class="card-wrap ps-2">
-              <img src='{% static "new_style/images/dhl.png" %}' alt="visa">
-              <img src='{% static "new_style/images/shippingcard.png" %}' alt="mastercard">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="payment-method d-flex">
-            <p  style="color:white">Payment options:</p>
-            <div class="card-wrap ps-2">
-              <img src='{% static "new_style/images/visa.jpg" %}' alt="visa">
-              <img src='{% static "new_style/images/mastercard.jpg" %}' alt="mastercard">
-              <img src='{% static "new_style/images/paypal.jpg" %}' alt="paypal">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <div class="copyright">
-            <p style="color:white">© Copyright 2024 Electrocom. <br />
-               Design by <a  style="color:white" href="">Albert Devasia</a>
 
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <script src='{% static "new_style/js/jquery-1.11.0.min.js" %}'></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-  <script type="text/javascript" src='{% static "new_style/js/bootstrap.bundle.min.js" %}'></script>
   <script type="text/javascript" src='{% static "new_style/js/plugins.js" %}'></script>
   <script type="text/javascript" src='{% static "new_style/js/script.js" %}'></script> 
+  <script  type="text/javascript" src='{% static "new_style/js/modernizr.js" %}'></script>
 
- 
 
 </body>
 

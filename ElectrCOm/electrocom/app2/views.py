@@ -593,6 +593,7 @@ def wishlist(request):
     print(wish)
     if is_empty:
         messages.warning(request, f"Your wishlist is empty.")
+
     return render(request,'wishlist.html',{'wish':wish,'is_empty':is_empty})
 
 
