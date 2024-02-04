@@ -137,7 +137,7 @@
     <div class="col-lg-10 mb-5">
         <div class="card mt-4 border shadow">
             <div class="card-body pt-4 ">
-              <form action="post" enctype="multipart/form-data">
+              <form method="post" enctype="multipart/form-data">
                 {%csrf_token%}
                 <div class="row mb-1">
                     <div class="col-sm-2 mt-2">
@@ -241,7 +241,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-3 mx-auto">
-                <button type="submit" class="btn btn-primary active px-4">Update profile</button>
+                <button type="submit" id="update-profile" class="btn btn-primary active px-4">Update profile</button>
               </div>
 
             </div>

@@ -133,7 +133,7 @@ def profile(request):
         profile.country = request.POST.get('country')
         profile.address = request.POST.get('address')
         profile.pincode = request.POST.get('pincode')
-        
+
         profile.save()
             
         return redirect('profile')
@@ -173,7 +173,7 @@ def seller_registration(request):
         # Validate the form data
         if not gst or not pan:
             # Handle invalid data
-            return render(request, 'sellerreg.html', {'error': 'Please enter both GSTIN and PAN'})
+            return render(request, 'sellerreg.html', {'error': 'Please enter both GST IN and PAN'})
 
         # Create a seller registration request object
         registration_request = sellerRegistrationRequest(
@@ -571,7 +571,7 @@ def product_details(request,product_id):
 def addtowishlist(request,product_id):
     product = get_object_or_404(Product, id=product_id)
     wish_item, created = Wishlist.objects.get_or_create(product_id=product_id,user_id = request.user.id)
-   
+    
     if not created:
         wish_item.quantity += 1
         wish_item.save()
@@ -590,7 +590,6 @@ def removewishlist(request,product_id):
 def wishlist(request):
     wish = Wishlist.objects.filter(user_id=request.user.id)
     is_empty = not wish.exists()
-    print(wish)
     if is_empty:
         messages.warning(request, f"Your wishlist is empty.")
 

@@ -195,7 +195,7 @@ class Wishlist(models.Model):
     quantity = models.PositiveIntegerField(default=1) 
     
     def __str__(self):
-        return f"hai"
+        return self.product.product_name
     
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)

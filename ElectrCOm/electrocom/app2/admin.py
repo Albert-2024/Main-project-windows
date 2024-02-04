@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductMobile,ProductLap,ProductSpeaker,ProductHeadset, Product, Profile,SellerProfile,sellerRegistrationRequest
+from .models import ProductMobile,ProductLap,ProductSpeaker,ProductHeadset, Product, Profile,SellerProfile,sellerRegistrationRequest,Wishlist
 
 # Register your models here.
 
@@ -14,6 +14,7 @@ admin.site.register(Product)
 admin.site.register(Profile)
 admin.site.register(SellerProfile)
 admin.site.register(sellerRegistrationRequest)
+admin.site.register(Wishlist)
 
 
 

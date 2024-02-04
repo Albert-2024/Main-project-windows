@@ -139,7 +139,8 @@
                 if (priceValue === '' || (parseFloat(priceValue) >= 100 && parseFloat(priceValue) <= 1000000)) {
                     priceValue = parseFloat(priceValue).toFixed(2);
                 } else if (parseFloat(priceValue) > 1000000) {
-                    priceValue = "1000000.00"; // Set the value to the maximum allowed
+                    priceValue = priceValue;
+                    window.alert("limit only upto 1000000.00") // Set the value to the maximum allowed
                 }
         
                 // Update the input field with the cleaned value

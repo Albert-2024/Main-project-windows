@@ -52,10 +52,10 @@
                     <p class="card-text">INR {{ i.price }}</p>
                     </a>
                     <a href="{% url 'addtocart' i.id %}">
-                      <button id="cart" class="btn btn-primary me-3">Add to Cart</button>
+                      <button id="cart" class="btn btn-primary me-2">Add to Cart</button>
                     </a>
                     <a href="{% url 'product_detail' i.id %}">
-                      <button id="more" class="btn btn-primary">View more</button>
+                      <button id="more" class="btn btn-primary me-2">View more</button>
                     </a>
                     <a href="{% url 'addtowishlist' i.id %}">
                       <button id="wishlist" class="btn btn-primary">Add to wishlist</button>
