@@ -7,7 +7,8 @@ from django.shortcuts import render
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest,JsonResponse
+from django.template.loader import render_to_string
 # from .forms import ProductForm,SpecificationForm
 
 from django.contrib  import messages,auth
@@ -16,6 +17,7 @@ from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, Prod
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
 #from .forms import UserForm, ServiceForm 
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -546,7 +548,12 @@ def product_form(request):
     return render(request,'product_form.html')
 
 def allproducts(request):
-    data = Product.objects.all()
+    if 'q' in request.GET:
+        q = request.GET['q']
+        multiple_q = Q(Q(name__icontains=q) | Q(product_name__icontains=q) | Q(price__icontains=q) | Q(category__icontains = q))
+        data = Product.objects.filter(multiple_q)
+    else:
+        data = Product.objects.all()
     return render(request,'products/allproducts.html',{'data': data})
 
 def product_details(request,product_id):
@@ -753,3 +760,14 @@ def paymenthandler(request):
        
         return HttpResponseBadRequest()
     
+# def product_search(request):
+#     query = request.GET.get('q')
+#     print(query)
+#     if query:
+#         result = Product.object.filter(name__icontains=query)
+#     else:
+#         result = Product.objects.none()
+
+#     html = render_to_string('search_results.html',{'result':result,'query':query})
+#     return JsonResponse
+        

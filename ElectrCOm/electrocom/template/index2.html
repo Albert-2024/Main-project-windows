@@ -13,9 +13,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script> 
   <script src='{% static "new_style/js/jquery-1.11.0.min.js" %}'></script>
 
-  
   <link rel="stylesheet" type="text/css" href='{% static "new_style/style.css"%}' /> 
   
 </head>
@@ -69,14 +69,19 @@
                         <div class="search-row d-flex flex-row ">
                           <div class="whitespace pe-2">
                             <li class="whitespace-nowrap" >
-                              <input class="form-control border-end-0 border rounded-pill" style="width: 250px; margin-left: 10px;" type="text" placeholder="search" id="example-search-input">
+                              <form id="search-form">
+                              <input class="form-control border-end-0 border rounded-pill" name="q" style="width: 250px; margin-left: 10px;" type="text" placeholder="search" id="search-input">
                             </li> 
                           </div>
-                          <div class="search-symbol ps-2 btn">
-                            <div class="fa fa-search">
-
+                          <div class="search-symbol ps-2">
+                              <button type="submit" class="fa fa-search" id="search-btn" onclick="searchProducts()"></button>
                             </div>
                           </div>
+                        </form>
+                        <!-- search result -->
+                        <div id="search-results">
+
+                        </div>
                            
                           </div>
                         </div>
@@ -722,6 +727,26 @@
   <script type="text/javascript" src='{% static "new_style/js/script.js" %}'></script> 
   <script  type="text/javascript" src='{% static "new_style/js/modernizr.js" %}'></script>
 
+  <script>
+    $(document).ready(function(){
+      $('#search-btn').on('submit',function(event){
+        event.preventDefault();
+
+        var query = $('#search-input').val();
+        $.ajax({
+          url:'search/',
+          type:'GET',
+          data:{'q':query},
+          sucess:function(response){
+            $('#search-result').html(response);
+          },
+          error:function(xhr,status,error){
+            console.error(xhr.responseText)
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 
