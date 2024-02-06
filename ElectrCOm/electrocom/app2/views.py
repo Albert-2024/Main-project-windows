@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 
 from django.contrib  import messages,auth
 # from .models import Brand, Category, CustomUser, Product
-from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile, ProductSpeaker,Cart, Wishlist,Profile,SellerProfile, sellerRegistrationRequest
+from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile, ProductSpeaker,Cart, Wishlist,Profile,SellerProfile, sellerRegistrationRequest, DeliveryRegistrationRequest,DeliveryProfile
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
 #from .forms import UserForm, ServiceForm 
@@ -63,8 +63,11 @@ def userlogin(request):
             auth_login(request, user) 
             if user.role == 2:       
                 return redirect('sellerDashboard')
+            elif user.role == 3 :
+                return redirect('delivery/deliveryIndex')
             else:
                 return redirect('/')
+            
         else:
                 error_message = "Invalid login credentials."
                 return render(request, 'login.html', {'error_message': error_message})
@@ -175,7 +178,7 @@ def seller_registration(request):
         # Validate the form data
         if not gst or not pan:
             # Handle invalid data
-            return render(request, 'sellerreg.html', {'error': 'Please enter both GST IN and PAN'})
+            return render(request, 'sellerreg.html',{'error': 'Please enter both GST IN and PAN'})
 
         # Create a seller registration request object
         registration_request = sellerRegistrationRequest(
@@ -192,7 +195,33 @@ def seller_registration(request):
     else:
         return render(request,'sellerreg.html')
 
-    
+def delivery_registration(request):
+    dev=DeliveryRegistrationRequest.objects.get(user_id=request.user.id)
+    if dev.status=='APPROVED':
+        return render(request,"delivery/deliveryIndex.html")
+    if request.method == 'POST':
+        license_num = request.POST.get('license_num')
+        id_num = request.POST.get('id_num')
+
+        if not license_num or not id_num:
+            return render(request,'delivery/register.html',{'error':'please enter license number and id card number'})
+        
+        registration_request = DeliveryRegistrationRequest(
+            user = request.user,
+            license_num = license_num,
+            id_num = id_num
+            
+        )
+        registration_request.save() 
+        return redirect('/') 
+    if request.user.role == 3:
+        return render(request,"delivery/deliveryIndex.html")
+    else:
+        return render(request,"delivery/register.html")
+
+def delivery_index(request):
+    return render(request,'delivery/deliveryIndex.html')
+
 from django.core.exceptions import ObjectDoesNotExist 
 
 def sellerProfile(request):
@@ -240,6 +269,18 @@ def process_approved_requests(sender, instance, created, **kwargs):
         session = Session.objects.get(session_key=instance.user.session_key)
         session['new_seller'] = True
         session.save()
+
+def process_approved_requests(sender,instance,created,*kwargs):
+    if instance.status == 'APPROVED':
+        instance.user.role = 3
+        instance.user.save()
+
+        DeliveryProfile.objects.create(user=instance.user,id_num=instance.id_num,license_num=instance.license_num)
+
+        session = Session.objects.get(session_key=instance.user.session_key)
+        session['new_delivery']=True
+        session.save()
+
 
 
 def sellerindex(request):

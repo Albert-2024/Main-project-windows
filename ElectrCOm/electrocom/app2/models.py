@@ -101,12 +101,30 @@ class sellerRegistrationRequest(models.Model):
     
     def __str__(self):
         return f'Seller Registration Request: {self.user.email}'
+    
+class DeliveryRegistrationRequest(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    status =  models.CharField(max_length=10,choices=[('PENDING','Pending'),('APPROVED','Approved'),('REJECTED','Rejected')],default='PENDING')
+    license_num = models.CharField(max_length=15,blank=False)
+    id_num = models.CharField(max_length=10,blank=False)
+    feedback = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'Delivery Agent Request: {self.user.email}'
 
 class SellerProfile(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
     gst = models.TextField(max_length=30)
     pan = models.TextField(max_length=30)
     
+    def __str__(self):
+        return self.user.email
+    
+class DeliveryProfile(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
+    license_num = models.TextField(max_length=15)
+    id_num = models.TextField(max_length=10)
+
     def __str__(self):
         return self.user.email
     

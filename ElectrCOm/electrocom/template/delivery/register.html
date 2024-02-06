@@ -1,0 +1,103 @@
+{%load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href='{% static "new_style/css/bootstrap.min.css"%} '>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet">
+    <!-- script
+      ================================================== -->
+    <script src='{% static "new_style/js/modernizr.js" %}'></script>
+    <link rel="stylesheet" type="text/css" href='{% static "new_style/style.css"%}'>
+</head>
+<body class=" bg-light-blue">
+    <div class="container mt-2">
+        
+        <div class="main-body">
+         
+          <div class="row" style="width: 500px; margin-left: 14rem; margin-top: 20px;">
+              <div class="ms-4 text-center" style="margin-left: 250px;">
+                <div class="img">
+                    <img src='{% static "assets/img/logo2.png" %}' class="logo">
+                </div>
+                   
+                  <h3 class="pt-2">Delivery Register</h1>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2">
+      
+            </div>
+            
+       
+          <div class="col-lg-5 mb-5">
+              <div class="card mt-4 border shadow">
+                  <div class="card-body pt-4 ">
+                    <form method="post" enctype="multipart/form-data">
+                      {%csrf_token%}
+                      <div class="row mb-1">
+                          <div class="col-sm-2">
+                              <div class="col-lg-12">
+                                  License Number
+                              </div>
+                          </div>
+                          <div class="col-sm-10">
+                              <div class="col-lg-12">
+                               <input type="text" class="form-control rounded-2" id="name" name="license_num" value="" placeholder="name" required><br><br>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row mb-1">
+                          <div class="col-sm-2">
+                              <div class="col-lg-12">
+                                 id card number 
+                              </div>
+                          </div>
+                          <div class="col-sm-10">
+                              <div class="col-lg-12">
+                                  <input type="text" class="form-control" id="name" name="id_num" value="" placeholder="name" required><br><br>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row mb-1">
+                        <div class="col-sm-2 mt-2">
+                            <div class="col-lg-12">
+                                Email
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="col-lg-12">
+                              <input type="text" id="email" class="form-control" name="email" placeholder="{{i.email}}" value="{{user.email}}" disabled><br><br>
+                            </div>
+                        </div>
+                    </div>
+      
+                
+                      <div class="row">
+                          <div class="col-lg-3 mx-auto">
+                      <button type="submit" class="btn btn-primary active">Register</button>
+                    </div>
+      
+                  </div>
+                  </div>
+                  </form>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                </div>
+                
+          </div>
+          <script src='{% static "new_style/js/jquery-1.11.0.min.js" %}'></script>
+          <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+          <script type="text/javascript" src='{% static "new_style/js/bootstrap.bundle.min.js" %}'></script>
+          <script type="text/javascript" src='{% static "new_style/js/plugins.js" %}'></script>
+          <script type="text/javascript" src='{% static "new_style/js/script.js" %}'></script>       
+</body>
+</html>
