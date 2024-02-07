@@ -63,8 +63,6 @@ def userlogin(request):
             auth_login(request, user) 
             if user.role == 2:       
                 return redirect('sellerDashboard')
-            elif user.role == 3 :
-                return redirect('delivery/deliveryIndex')
             else:
                 return redirect('/')
             
@@ -195,32 +193,38 @@ def seller_registration(request):
     else:
         return render(request,'sellerreg.html')
 
-def delivery_registration(request):
-    dev=DeliveryRegistrationRequest.objects.get(user_id=request.user.id)
-    if dev.status=='APPROVED':
-        return render(request,"delivery/deliveryIndex.html")
-    if request.method == 'POST':
-        license_num = request.POST.get('license_num')
-        id_num = request.POST.get('id_num')
 
-        if not license_num or not id_num:
-            return render(request,'delivery/register.html',{'error':'please enter license number and id card number'})
+def delivery_registration(request):
+    print("Function")
+    if request.method == 'POST':
+        print("submited")
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('pass')
+        # confirm_password = request.POST.get('confirm')
         
-        registration_request = DeliveryRegistrationRequest(
-            user = request.user,
-            license_num = license_num,
-            id_num = id_num
-            
-        )
-        registration_request.save() 
-        return redirect('/') 
-    if request.user.role == 3:
-        return render(request,"delivery/deliveryIndex.html")
-    else:
-        return render(request,"delivery/register.html")
+        if CustomUser.objects.filter(email=email).exists():          
+            messages.error(request,'email already exists')
+        # elif password != confirm_password:
+        #     print("pass")
+        #     messages.error(request,'Password doesnot match')
+        elif first_name and last_name and email and password:
+            user=CustomUser(first_name=first_name,last_name=last_name,email=email,role = 3)
+            user.set_password(password)
+            user.is_active = True
+            user.save()
+        return redirect('delivery_index')
+    return render(request,"delivery/del_reg.html")
 
 def delivery_index(request):
     return render(request,'delivery/deliveryIndex.html')
+
+def delivery_profile(request):
+    return render(request,'delivery/deliveryProfile.html')
+
+
+
 
 from django.core.exceptions import ObjectDoesNotExist 
 

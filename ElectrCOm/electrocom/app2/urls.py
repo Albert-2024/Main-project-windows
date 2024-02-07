@@ -21,6 +21,7 @@ urlpatterns = [
     path('sellerindex/',views.sellerindex,name='sellerindex'),
     path('delivery/register',views.delivery_registration,name='delivery_registration'),
     path('delivery/index',views.delivery_index,name='delivery_index'),
+    path('delivery/profile',views.delivery_profile,name='delivery_profile'),
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),
     path('password_reset/done/',auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),

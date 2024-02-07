@@ -65,7 +65,7 @@ class CustomUser(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superadmin = models.BooleanField(default=False)
-
+    
 
     
     REQUIRED_FIELDS = []
@@ -80,7 +80,10 @@ class CustomUser(AbstractUser):
 
     def has_module_perms(self, app_label):
         return True
-    
+class delivery(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+
+
 class Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
     address = models.TextField(default="", null=True)
