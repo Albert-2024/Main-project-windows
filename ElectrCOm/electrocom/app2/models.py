@@ -65,7 +65,7 @@ class CustomUser(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superadmin = models.BooleanField(default=False)
-    
+
 
     
     REQUIRED_FIELDS = []
@@ -80,10 +80,7 @@ class CustomUser(AbstractUser):
 
     def has_module_perms(self, app_label):
         return True
-class delivery(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
-
-
+    
 class Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
     address = models.TextField(default="", null=True)
@@ -109,12 +106,27 @@ class DeliveryRegistrationRequest(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     status =  models.CharField(max_length=10,choices=[('PENDING','Pending'),('APPROVED','Approved'),('REJECTED','Rejected')],default='PENDING')
     license_num = models.CharField(max_length=15,blank=False)
-    id_num = models.CharField(max_length=10,blank=False)
+    RC = models.CharField(max_length=30)
+    pan = models.CharField(max_length=30)
+    aadhar=models.CharField(max_length=40)
     feedback = models.TextField(blank=True)
+    
 
     def __str__(self):
         return f'Delivery Agent Request: {self.user.email}'
+    
+class DeliveryRegistrationRequests(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    status =  models.CharField(max_length=10,choices=[('PENDING','Pending'),('APPROVED','Approved'),('REJECTED','Rejected')],default='PENDING')
+    license_num = models.CharField(max_length=15,blank=False)
+    RC = models.CharField(max_length=30)
+    pan = models.CharField(max_length=30)
+    aadhar=models.CharField(max_length=40)
+    feedback = models.TextField(blank=True)
+    
 
+    def __str__(self):
+        return f'Delivery Agent Request: {self.user.email}'
 class SellerProfile(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
     gst = models.TextField(max_length=30)

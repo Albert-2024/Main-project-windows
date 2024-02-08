@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 
 from django.contrib  import messages,auth
 # from .models import Brand, Category, CustomUser, Product
-from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile, ProductSpeaker,Cart, Wishlist,Profile,SellerProfile, sellerRegistrationRequest, DeliveryRegistrationRequest,DeliveryProfile
+from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile, ProductSpeaker,Cart, Wishlist,Profile,SellerProfile, sellerRegistrationRequest, DeliveryRegistrationRequests,DeliveryRegistrationRequest,DeliveryProfile
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
 #from .forms import UserForm, ServiceForm 
@@ -63,6 +63,8 @@ def userlogin(request):
             auth_login(request, user) 
             if user.role == 2:       
                 return redirect('sellerDashboard')
+            elif user.role == 3:       
+                return redirect('delivery_index')
             else:
                 return redirect('/')
             
@@ -204,7 +206,8 @@ def delivery_registration(request):
         password = request.POST.get('pass')
         # confirm_password = request.POST.get('confirm')
         
-        if CustomUser.objects.filter(email=email).exists():          
+        if CustomUser.objects.filter(email=email).exists():  
+            print("already")          
             messages.error(request,'email already exists')
         # elif password != confirm_password:
         #     print("pass")
@@ -214,16 +217,41 @@ def delivery_registration(request):
             user.set_password(password)
             user.is_active = True
             user.save()
-        return redirect('delivery_index')
+        return redirect('delivery_form2')
     return render(request,"delivery/del_reg.html")
 
+def delivery_form2(request):
+    if request.method == 'POST':
+        rc_num = request.POST.get('rc_num')
+        lic_num = request.POST.get('lic_num')
+        aadhar_num = request.POST.get('aadhar_num')
+        pan = request.POST.get('pan')
+        role=3
+
+        if not rc_num and not lic_num and not aadhar_num and not pan:
+            return render(request,'delivery/form_2.html',{'error':'enter details'})
+        
+        registration_request = DeliveryRegistrationRequests(
+            user=request.user,
+            rc_num=rc_num,
+            lic_num=lic_num,
+            aadhar_num=aadhar_num,
+            pan=pan,
+            role=role
+            )
+        registration_request.save()
+        return redirect('/')
+
+    if request.user.role == 3:
+        return render(request, 'delivery/delivery_index.html')
+    else:
+        return render(request,'form2.html')
+
 def delivery_index(request):
-    return render(request,'delivery/deliveryIndex.html')
+    return render(request,'delivery/delivery_index.html')
 
 def delivery_profile(request):
     return render(request,'delivery/deliveryProfile.html')
-
-
 
 
 from django.core.exceptions import ObjectDoesNotExist 
