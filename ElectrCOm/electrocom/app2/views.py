@@ -64,7 +64,7 @@ def userlogin(request):
             if user.role == 2:       
                 return redirect('sellerDashboard')
             elif user.role == 3:       
-                return redirect('delivery_index')
+                return redirect('delivery_form2')
             else:
                 return redirect('/')
             
@@ -79,48 +79,6 @@ def userLogout(request):
     request.session.pop('is_logged_in',None)
     return redirect('/') 
     
-# def profile(request):
-#     # def seller_profile(request):
-#     user=User.objects.filter(id=request.user.id)
-#     userexists=Profile.objects.filter(user_id=request.user.id).exists()
-#     if userexists:
-#         seller=Profile.objects.filter(user_id=request.user.id)
-#     else:
-#         seller=None
-#         # print(seller)
-#     if request.method=='POST':
-#         phone=request.POST.get('seller-number')
-#         userdata1=UserData.objects.get(user_id=request.user.id)
-#         userdata1.number=phone
-#         userdata1.save()
-#         if userexists:
-#             seller1=SellerProfile.objects.get(user_id=request.user.id)
-#             seller1.district=request.POST.get('seller-district')
-#             seller1.state=request.POST.get('seller-state')
-#             seller1.country=request.POST.get('seller-country')
-#             seller1.address=request.POST.get('seller-address')
-#             seller1.pincode=request.POST.get('seller-pincode')
-#             image=request.FILES.get('seller-image')
-#             if image==None:
-#                 seller1.image=seller1.image
-#             else:
-#                 seller1.image=image
-#             seller1.save()
-#             return redirect('seller_profile')
-#         else:
-#             user1=SellerProfile(
-#             district=request.POST.get('seller-district'),
-#             state=request.POST.get('seller-state'),
-#             country=request.POST.get('seller-country'),
-#             address=request.POST.get('seller-address'),
-#             pincode=request.POST.get('seller-pincode'),
-#             image=request.FILES.get('seller-image'),
-#             user_id=request.user.id,
-#             )
-#             user1.save()
-#             return redirect('profile')
-#     return render(request,'profile.html',{'user':user,'seller':seller,'userdata':userdata,})
-
             
 @login_required
 def profile(request):
@@ -231,6 +189,53 @@ def delivery_form2(request):
         if not rc_num and not lic_num and not aadhar_num and not pan:
             return render(request,'delivery/form_2.html',{'error':'enter details'})
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
         registration_request = DeliveryRegistrationRequests(
             user=request.user,
             rc_num=rc_num,
@@ -242,10 +247,8 @@ def delivery_form2(request):
         registration_request.save()
         return redirect('/')
 
-    if request.user.role == 3:
-        return render(request, 'delivery/delivery_index.html')
-    else:
-        return render(request,'form2.html')
+    return render(request, 'delivery/delivery_form2.html')
+    
 
 def delivery_index(request):
     return render(request,'delivery/delivery_index.html')

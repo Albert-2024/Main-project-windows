@@ -5,7 +5,8 @@
     <title>Important Docs</title>
 </head>
 <body>
-    <form method="post" action="">
+    <form method="post" >
+        {% csrf_token %}
         <input type="text" name="rc_num" placeholder="Enter Rc bok number">
         <input type="text" name="lic_num" id="" placeholder="Enter license number">
         <input type="text" name="aadhar_num" id="" placeholder="Enter Aadhar number">
