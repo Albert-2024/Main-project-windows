@@ -167,6 +167,7 @@ def delivery_registration(request):
         if CustomUser.objects.filter(email=email).exists():  
             print("already")          
             messages.error(request,'email already exists')
+        
         # elif password != confirm_password:
         #     print("pass")
         #     messages.error(request,'Password doesnot match')
@@ -175,8 +176,18 @@ def delivery_registration(request):
             user.set_password(password)
             user.is_active = True
             user.save()
-        return redirect('delivery_form2')
+            print("hai")
+
+        return redirect('login')
     return render(request,"delivery/del_reg.html")
+
+def login(request):
+    return render(request,'userlogin')
+
+
+
+
+# @login_required
 
 def delivery_form2(request):
     if request.method == 'POST':
@@ -184,69 +195,16 @@ def delivery_form2(request):
         lic_num = request.POST.get('lic_num')
         aadhar_num = request.POST.get('aadhar_num')
         pan = request.POST.get('pan')
-        role=3
-
-        if not rc_num and not lic_num and not aadhar_num and not pan:
-            return render(request,'delivery/form_2.html',{'error':'enter details'})
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
         registration_request = DeliveryRegistrationRequests(
             user=request.user,
             rc_num=rc_num,
             lic_num=lic_num,
             aadhar_num=aadhar_num,
-            pan=pan,
-            role=role
+            pan=pan
             )
         registration_request.save()
         return redirect('/')
-
+        
     return render(request, 'delivery/delivery_form2.html')
     
 
