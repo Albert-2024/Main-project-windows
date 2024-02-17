@@ -123,6 +123,7 @@ class DeliveryRegistrationRequests(models.Model):
     pan = models.CharField(max_length=30)
     aadhar_num=models.CharField(max_length=40)
     feedback = models.TextField(blank=True)
+    is_registered = models.BooleanField(default=False)
     
 
     def __str__(self):

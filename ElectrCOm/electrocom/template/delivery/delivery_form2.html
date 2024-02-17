@@ -7,11 +7,15 @@
 <body>
     <form method="post" >
         {% csrf_token %}
+        {%if request.user.is_authenticated and request.user.is_registered %}
+        <p>You have already registered. wait for the confirmation</p>
+        {%else%}
         <input type="text" name="rc_num" placeholder="Enter Rc bok number">
         <input type="text" name="lic_num" id="" placeholder="Enter license number">
         <input type="text" name="aadhar_num" id="" placeholder="Enter Aadhar number">
         <input type="text" name="pan" id="" placeholder="pan card number">
         <button type="submit">Submit</button>
+        {%endif%}
     </form>
 </body>
 </html>

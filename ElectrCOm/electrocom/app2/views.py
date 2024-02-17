@@ -184,29 +184,39 @@ def delivery_registration(request):
 def login(request):
     return render(request,'userlogin')
 
-
-
-
 # @login_required
 
 def delivery_form2(request):
-    if request.method == 'POST':
+    user=request.user.id
+    print("1st user",user)
+    if DeliveryRegistrationRequests.objects.filter(user=request.user.id).exists():
+            print("Already registered")
+            return render(request,"delivery/waiting.html") # create a waiting page
+    elif request.method == 'POST':
         rc_num = request.POST.get('rc_num')
         lic_num = request.POST.get('lic_num')
         aadhar_num = request.POST.get('aadhar_num')
         pan = request.POST.get('pan')
+
+        if not rc_num and not lic_num and not aadhar_num and not pan:
+            return render(request,"delivery_form2.html",{'error':'enter details'})
+
         registration_request = DeliveryRegistrationRequests(
             user=request.user,
             rc_num=rc_num,
             lic_num=lic_num,
             aadhar_num=aadhar_num,
             pan=pan
+
             )
         registration_request.save()
-        return redirect('/')
+        print("success")
+        return redirect('waiting') #After create a waiting page
         
     return render(request, 'delivery/delivery_form2.html')
-    
+
+def waiting(request):
+    return render(request,'delivery/waiting.html')   
 
 def delivery_index(request):
     return render(request,'delivery/delivery_index.html')

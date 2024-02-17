@@ -22,6 +22,7 @@ urlpatterns = [
     path('delivery/register',views.delivery_registration,name='delivery_registration'),
     path('delivery/delivery_form2',views.delivery_form2,name='delivery_form2'),
     path('delivery/delivery_index',views.delivery_index,name='delivery_index'),
+    path('delivery/waiting',views.waiting,name='waiting'),
     # path('delivery/delivery_login',views.delivery_login,name='delivery_login'),
     path('delivery/profile',views.delivery_profile,name='delivery_profile'),
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),
