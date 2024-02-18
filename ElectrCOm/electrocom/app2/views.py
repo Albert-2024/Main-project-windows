@@ -9,6 +9,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest,JsonResponse
 from django.template.loader import render_to_string
+from django.utils import timezone
 # from .forms import ProductForm,SpecificationForm
 
 from django.contrib  import messages,auth
@@ -184,9 +185,17 @@ def delivery_registration(request):
 def login(request):
     return render(request,'userlogin')
 
-# @login_required
+@login_required
 
 def delivery_form2(request):
+    if 'last_activity' in request.session:
+        last_activity = timezone.make_aware(timezone.datetime.strptime(request.session['last_activity'],'%Y-%m-%d %H:%M:%S.%f%z'))
+        expiration_time = last_activity + timezone.timedelta(seconds=settings.SESSION_EXPIRE_SECONDS)
+        if timezone.now() > expiration_time:
+            return redirect(request,'login')
+    else:
+        request.session['last_activity']=timezone.now().strftime('%Y-%m-%d %H:%M:%S.%f%z')
+
     user=request.user.id
     print("1st user",user)
     if DeliveryRegistrationRequests.objects.filter(user=request.user.id).exists():
