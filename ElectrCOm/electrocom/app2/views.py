@@ -14,7 +14,7 @@ from django.utils import timezone
 
 from django.contrib  import messages,auth
 # from .models import Brand, Category, CustomUser, Product
-from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile, ProductSpeaker,Cart, Wishlist,Profile,SellerProfile, sellerRegistrationRequest, DeliveryRegistrationRequests,DeliveryRegistrationRequest,DeliveryProfile
+from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile, ProductSpeaker,Cart, Wishlist,Profile,SellerProfile, sellerRegistrationRequest, DeliveryRegistrationRequests,DeliveryProfile
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
 #from .forms import UserForm, ServiceForm 

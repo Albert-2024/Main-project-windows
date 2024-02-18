@@ -102,18 +102,6 @@ class sellerRegistrationRequest(models.Model):
     def __str__(self):
         return f'Seller Registration Request: {self.user.email}'
     
-class DeliveryRegistrationRequest(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
-    status =  models.CharField(max_length=10,choices=[('PENDING','Pending'),('APPROVED','Approved'),('REJECTED','Rejected')],default='PENDING')
-    license_num = models.CharField(max_length=15,blank=False)
-    RC = models.CharField(max_length=30)
-    pan = models.CharField(max_length=30)
-    aadhar=models.CharField(max_length=40)
-    feedback = models.TextField(blank=True)
-    
-
-    def __str__(self):
-        return f'Delivery Agent Request: {self.user.email}'
     
 class DeliveryRegistrationRequests(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
