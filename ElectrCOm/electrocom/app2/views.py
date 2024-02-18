@@ -81,7 +81,7 @@ def userLogout(request):
     return redirect('/') 
     
             
-@login_required
+@login_required(login_url='/app2/login')
 def profile(request):
     user = request.user
     try:
@@ -103,30 +103,6 @@ def profile(request):
         return redirect('profile')
     
     return render(request,'profile.html',{'user':user,'profile':profile})
-
-
-# def sellerreg(request):
-#     user=request.user
-
-#     if user.role==2:
-        
-#         return redirect('sellerDashboard')
-#     else:
-#         if request.method == 'POST':
-            
-#             gst = request.POST.get('gst')
-#             pan = request.POST.get('pan')
-#             SellerProfile(
-#             gst=gst,
-#             pan=pan,
-#             user_id=request.user.id
-#             ).save()
-#             user.role = 2
-#             user.save()
-            
-#             return redirect('sellerDashboard')
-                
-#     return render(request, 'sellerreg.html')
 
 def seller_registration(request):
     
@@ -185,42 +161,45 @@ def delivery_registration(request):
 def login(request):
     return render(request,'userlogin')
 
-@login_required
-
+@login_required(login_url='/app2/login')
 def delivery_form2(request):
-    if 'last_activity' in request.session:
-        last_activity = timezone.make_aware(timezone.datetime.strptime(request.session['last_activity'],'%Y-%m-%d %H:%M:%S.%f%z'))
-        expiration_time = last_activity + timezone.timedelta(seconds=settings.SESSION_EXPIRE_SECONDS)
-        if timezone.now() > expiration_time:
-            return redirect(request,'login')
-    else:
-        request.session['last_activity']=timezone.now().strftime('%Y-%m-%d %H:%M:%S.%f%z')
+    # if 'last_activity' in request.session:
+    #     last_activity = timezone.make_aware(timezone.datetime.strptime(request.session['last_activity'],'%Y-%m-%d %H:%M:%S.%f%z'))
+    #     expiration_time = last_activity + timezone.timedelta(seconds=settings.SESSION_EXPIRE_SECONDS)
+    #     if timezone.now() > expiration_time:
+    #         return redirect(request,'login')
+    # else:
+    #     request.session['last_activity']=timezone.now().strftime('%Y-%m-%d %H:%M:%S.%f%z')
 
     user=request.user.id
     print("1st user",user)
-    if DeliveryRegistrationRequests.objects.filter(user=request.user.id).exists():
+    currentUser=DeliveryRegistrationRequests.objects.get(user=user)
+    if currentUser.status=='PENDING':
             print("Already registered")
             return render(request,"delivery/waiting.html") # create a waiting page
-    elif request.method == 'POST':
-        rc_num = request.POST.get('rc_num')
-        lic_num = request.POST.get('lic_num')
-        aadhar_num = request.POST.get('aadhar_num')
-        pan = request.POST.get('pan')
+    elif currentUser.status=='APPROVED':
+        return redirect('delivery_index')
+    else:
+        if request.method == 'POST':
+            rc_num = request.POST.get('rc_num')
+            lic_num = request.POST.get('lic_num')
+            aadhar_num = request.POST.get('aadhar_num')
+            pan = request.POST.get('pan')
 
-        if not rc_num and not lic_num and not aadhar_num and not pan:
-            return render(request,"delivery_form2.html",{'error':'enter details'})
+            if not rc_num and not lic_num and not aadhar_num and not pan:
+                return render(request,"delivery_form2.html",{'error':'enter details'})
 
-        registration_request = DeliveryRegistrationRequests(
-            user=request.user,
-            rc_num=rc_num,
-            lic_num=lic_num,
-            aadhar_num=aadhar_num,
-            pan=pan
+            registration_request = DeliveryRegistrationRequests(
+                user=request.user,
+                rc_num=rc_num,
+                lic_num=lic_num,
+                aadhar_num=aadhar_num,
+                pan=pan
 
-            )
-        registration_request.save()
-        print("success")
-        return redirect('waiting') #After create a waiting page
+                )
+            registration_request.save()
+            print("success")
+            return redirect('waiting') #After create a waiting page
         
     return render(request, 'delivery/delivery_form2.html')
 
