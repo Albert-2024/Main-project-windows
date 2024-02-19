@@ -14,7 +14,8 @@ from django.utils import timezone
 
 from django.contrib  import messages,auth
 # from .models import Brand, Category, CustomUser, Product
-from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile, ProductSpeaker,Cart, Wishlist,Profile,SellerProfile, sellerRegistrationRequest, DeliveryRegistrationRequests,DeliveryProfile
+from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile,Profile,SellerProfile
+from .models import sellerRegistrationRequest, DeliveryRegistrationRequests,DeliveryProfile, ProductSpeaker,Cart, Wishlist
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
 #from .forms import UserForm, ServiceForm 
@@ -79,7 +80,11 @@ def userLogout(request):
     auth.logout(request)
     request.session.pop('is_logged_in',None)
     return redirect('/') 
-    
+
+def delLogout(request):
+    auth.logout(request)
+    request.session.pop('is_logged_in',None)
+    return redirect('login')
             
 @login_required(login_url='/app2/login')
 def profile(request):
@@ -163,14 +168,6 @@ def login(request):
 
 @login_required(login_url='/app2/login')
 def delivery_form2(request):
-    # if 'last_activity' in request.session:
-    #     last_activity = timezone.make_aware(timezone.datetime.strptime(request.session['last_activity'],'%Y-%m-%d %H:%M:%S.%f%z'))
-    #     expiration_time = last_activity + timezone.timedelta(seconds=settings.SESSION_EXPIRE_SECONDS)
-    #     if timezone.now() > expiration_time:
-    #         return redirect(request,'login')
-    # else:
-    #     request.session['last_activity']=timezone.now().strftime('%Y-%m-%d %H:%M:%S.%f%z')
-
     user=request.user.id
     print("1st user",user)
     currentUser=DeliveryRegistrationRequests.objects.get(user=user)
@@ -203,13 +200,24 @@ def delivery_form2(request):
         
     return render(request, 'delivery/delivery_form2.html')
 
+
 def waiting(request):
     return render(request,'delivery/waiting.html')   
 
+@login_required(login_url='/app2/login')
 def delivery_index(request):
+    user=request.user.id
     return render(request,'delivery/delivery_index.html')
 
+@login_required(login_url='/app2/login')
 def delivery_profile(request):
+    user=request.user.id
+    delivery = DeliveryRegistrationRequests.objects.all()
+    data = {
+        'delivery':delivery
+    }
+    print(data)
+    print(user)
     return render(request,'delivery/deliveryProfile.html')
 
 

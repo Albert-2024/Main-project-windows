@@ -126,9 +126,16 @@ class SellerProfile(models.Model):
         return self.user.email
     
 class DeliveryProfile(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
-    license_num = models.TextField(max_length=15)
-    id_num = models.TextField(max_length=10)
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
+    delivery = models.ForeignKey(DeliveryRegistrationRequests,on_delete=models.CASCADE,null=True)
+    address = models.CharField(max_length=70)
+    country = models.CharField(max_length=70)
+    state = models.CharField(max_length=70)
+    district = models.CharField(max_length=70)
+    pincode = models.CharField(max_length=70)
+    bank = models.CharField(max_length=70)
+    acc_num = models.CharField(max_length=70)
+    ifsc = models.CharField(max_length=70)
 
     def __str__(self):
         return self.user.email

@@ -15,7 +15,6 @@ admin.site.register(Profile)
 admin.site.register(SellerProfile)
 admin.site.register(sellerRegistrationRequest)
 admin.site.register(Wishlist)
-
 admin.site.register(DeliveryRegistrationRequests)
 admin.site.register(DeliveryProfile)
 

@@ -34,6 +34,7 @@ urlpatterns = [
     path('headset/',views.headset_list,name='headset'),
     path('speaker/',views.speaker_list,name='speaker'),
     path('userLogout/',views.userLogout,name='userLogout'),
+    path('delLogout',views.delLogout,name='delLogout'),
     path('addlaptop/<int:product_id>/',views.addlaptop,name='addlaptop'),
     path('addmobile/<int:product_id>',views.addmobile,name='addmobile'),
     path('addheadset/<int:product_id>',views.addheadset,name='addheadset'),

@@ -77,14 +77,14 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6></h6>
+              <h6>Hai, {{user.first_name}}</h6>
               <span></span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            {% comment %} <li>
+            <li>
               <a class="dropdown-item d-flex align-items-center">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
@@ -92,11 +92,11 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'delLogout' %}">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
-            </li> {% endcomment %}
+            </li>
 
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
@@ -114,7 +114,7 @@
       <li class="nav-heading">Pages</li>
       {% block home %}
       <li class="nav-item">
-        <a class="nav-link collapsed" href="http://127.0.0.1:8000/app2/delivery/index">
+        <a class="nav-link collapsed" href="http://127.0.0.1:8000/app2/delivery/delivery_index">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -124,13 +124,13 @@
       <li class="nav-item">
         <a class="nav-link " href="index.html">
           <i class="bi bi-card-list"></i>
-          <span>Add products</span>
+          <span>Select Schedules</span>
         </a>
       </li>
       {% endblock add_products %}
       {% block profile %}
       <li class="nav-item">
-        <a class="nav-link collapsed"  href="{% url "delivery_profile" %}">
+        <a class="nav-link collapsed"  href="{% url 'delivery_profile' %}">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -177,7 +177,7 @@
      <!-- End Register Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href='{% url "delLogout" %}'>
           <i class="bi bi-box-arrow-in-right"></i>
           <span>Log out</span>
         </a>
