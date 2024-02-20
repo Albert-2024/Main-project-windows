@@ -211,13 +211,6 @@ def delivery_index(request):
 
 @login_required(login_url='/app2/login')
 def delivery_profile(request):
-    user=request.user.id
-    delivery = DeliveryRegistrationRequests.objects.all()
-    data = {
-        'delivery':delivery
-    }
-    print(data)
-    print(user)
     return render(request,'delivery/deliveryProfile.html')
 
 
@@ -269,16 +262,16 @@ def process_approved_requests(sender, instance, created, **kwargs):
         session['new_seller'] = True
         session.save()
 
-def process_approved_requests(sender,instance,created,*kwargs):
-    if instance.status == 'APPROVED':
-        instance.user.role = 3
-        instance.user.save()
+# def process_approved_requests(sender,instance,created,*kwargs):
+#     if instance.status == 'APPROVED':
+#         instance.user.role = 3
+#         instance.user.save()
 
-        DeliveryProfile.objects.create(user=instance.user,id_num=instance.id_num,license_num=instance.license_num)
+#         DeliveryProfile.objects.create(user=instance.user,id_num=instance.id_num,license_num=instance.license_num)
 
-        session = Session.objects.get(session_key=instance.user.session_key)
-        session['new_delivery']=True
-        session.save()
+#         session = Session.objects.get(session_key=instance.user.session_key)
+#         session['new_delivery']=True
+#         session.save()
 
 
 

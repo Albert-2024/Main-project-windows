@@ -69,7 +69,6 @@ urlpatterns = [
     # path('search/',views.product_search,name='product_search'),
     
     
-    
     # path('cart/',views.cart,name='cart'),
     # path('<str:category>/<int:product_id>/add_to_cart/', views.add_to_cart, name='add_to_cart'),
     
