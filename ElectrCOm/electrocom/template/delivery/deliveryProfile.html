@@ -76,7 +76,7 @@
             <div class="col-sm-10">
               <div class=".col-lg-8">
                 <input type="text" class="form-control" id="address" name="address"
-                  value="{% if profile %}{{ profile.address }}{% endif %}" placeholder="Address" required><br><br>
+                  value="{{ profile.address }}" placeholder="Address" required><br><br>
               </div>
             </div>
           </div>
@@ -140,7 +140,7 @@
             </div>
             <div class="col-sm-10">
               <div class=".col-lg-8">
-                <input type="text" class="form-control" id="pan" name="pan" value="{{data.pan}}" placeholder="pan"
+                <input type="text" class="form-control" id="pan" name="pan" value="{{all.pan}}" placeholder="pan"
                   required disabled><br><br>
               </div>
             </div>
@@ -153,11 +153,12 @@
             </div>
             <div class="col-sm-10">
               <div class=".col-lg-8">
-                <input type="text" class="form-control rounded-2" id="name" name="aadhar_num" value="aadhar_num"
-                  placeholder="name" required><br><br>
+                <input type="text" class="form-control rounded-2" id="name" name="aadhar_num" value="{{all.aadhar_num}}"
+                  placeholder="name" required disabled><br><br>
               </div>
             </div>
           </div>
+
           <div class="row mb-1">
             <div class="col-sm-2 mt-2">
               <div class=".col-lg-4">
@@ -166,11 +167,12 @@
             </div>
             <div class="col-sm-10">
               <div class=".col-lg-8">
-                <input type="text" class="form-control rounded-2" id="name" name="lic_num" value="lic_num"
-                  placeholder="name" required><br><br>
+                <input type="text" class="form-control rounded-2" id="name" name="lic_num" value="{{all.lic_num}}"
+                  placeholder="name" required disabled><br><br>
               </div>
             </div>
           </div>
+
           <div class="row mb-1">
             <div class="col-sm-2 mt-2">
               <div class=".col-lg-4">
@@ -179,11 +181,13 @@
             </div>
             <div class="col-sm-10">
               <div class=".col-lg-8">
-                <input type="text" class="form-control rounded-2" id="name" name="rc_num" value="rc_num"
-                  placeholder="name" required><br><br>
+                <input type="text" class="form-control rounded-2" id="name" name="rc_num" value="{{all.rc_num}}"
+                  placeholder="name" required disabled><br><br>
               </div>
             </div>
           </div>
+          
+
           <div class="row mb-1">
             <div class="col-sm-2 mt-2">
               <div class=".col-lg-4">
@@ -192,8 +196,8 @@
             </div>
             <div class="col-sm-10">
               <div class=".col-lg-8">
-                <input type="text" class="form-control rounded-2" id="name" name="bank" value="bank"
-                  placeholder="name" required><br><br>
+                <input type="text" class="form-control rounded-2" id="name" name="bank" value= {{profile.bank}}
+                  placeholder="bank" required><br><br>
               </div>
             </div>
           </div>
@@ -205,8 +209,8 @@
             </div>
             <div class="col-sm-10">
               <div class=".col-lg-8">
-                <input type="text" class="form-control rounded-2" id="name" name="acc_num" value="acc_num"
-                  placeholder="name" required><br><br>
+                <input type="text" class="form-control rounded-2" id="name" name="acc_num" value={{profile.acc_num}}
+                  placeholder="acc_num" required><br><br>
               </div>
             </div>
           </div>
@@ -219,8 +223,8 @@
             </div>
             <div class="col-sm-10">
               <div class=".col-lg-8">
-                <input type="text" class="form-control rounded-2" id="name" name="ifsc" value="ifsc"
-                  placeholder="name" required><br><br>
+                <input type="text" class="form-control rounded-2" id="name" name="ifsc" value={{profile.ifsc}}
+                  placeholder="ifsc" required><br><br>
               </div>
             </div>
           </div>

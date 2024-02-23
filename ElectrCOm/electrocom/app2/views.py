@@ -211,7 +211,26 @@ def delivery_index(request):
 
 @login_required(login_url='/app2/login')
 def delivery_profile(request):
-    return render(request,'delivery/deliveryProfile.html')
+    # Fetch DeliveryRegistrationRequests object for the current user
+    data = DeliveryRegistrationRequests.objects.get(user=request.user)
+
+    # Fetch or create DeliveryProfile object for the current user
+    profile, created = DeliveryProfile.objects.get_or_create(delivery=data)
+
+    if request.method == 'POST':
+        # Update the existing profile with the new data
+        profile.address = request.POST.get('address')
+        profile.country = request.POST.get('country')
+        profile.state = request.POST.get('state')
+        profile.district = request.POST.get('district')
+        profile.pincode = request.POST.get('pincode')
+        profile.bank = request.POST.get('bank')
+        profile.acc_num = request.POST.get('acc_num')
+        profile.ifsc = request.POST.get('ifsc')
+        profile.save()
+        print("Profile updated successfully")
+
+    return render(request, 'delivery/deliveryProfile.html', {'all': data, 'profile': profile})
 
 
 from django.core.exceptions import ObjectDoesNotExist 
@@ -475,7 +494,6 @@ def addheadset(request,product_id):
     if request.method == 'POST':
         
         print(head)
-        
         head.battery = request.POST.get('battery')
         head.color = request.POST.get('color')
         head.form_factor = request.POST.get('form_factor')
@@ -635,19 +653,7 @@ def wishlist(request):
 
     return render(request,'wishlist.html',{'wish':wish,'is_empty':is_empty})
 
-
-
-def cart(request):
-    product = Cart.objects.filter(user_id=request.user.id)
-    sub_total = sum([item.price * item.quantity for item in product])
-    total_price = sub_total
-    is_empty = not product.exists()
-    # cartstock = Cart.objects.filter(user_id=request.user.id)
-    if is_empty:
-        messages.warning(request, f"Your cart is empty.")
-    return render(request,'cart.html',{'product':product,'total_price':total_price,'sub_total':sub_total,'is_empty':is_empty})
-
-   
+@login_required(login_url='/app2/login')
 def addtocart(request,product_id):
     product = get_object_or_404(Product, id=product_id)
     print(product)
@@ -659,11 +665,25 @@ def addtocart(request,product_id):
         
     return redirect('cart')
 
-
 def delete_cart(request,product_id):
     remove = Cart.objects.filter(id=product_id)
     remove.delete()
     return redirect('cart')
+
+
+@login_required(login_url='/app2/login')
+def cart(request):
+    product = Cart.objects.filter(user_id=request.user.id)
+    sub_total = sum([item.price * item.quantity for item in product])
+    total_price = sub_total
+    is_empty = not product.exists()
+
+    if product.exists():
+        print('hai')
+    # cartstock = Cart.objects.filter(user_id=request.user.id)
+    if is_empty:
+        messages.warning(request, f"Your cart is empty.")
+    return render(request,'cart.html',{'product':product,'total_price':total_price,'sub_total':sub_total,'is_empty':is_empty})
 
 
 def increase_item(request, item_id):

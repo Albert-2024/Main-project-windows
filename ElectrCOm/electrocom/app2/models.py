@@ -125,18 +125,6 @@ class SellerProfile(models.Model):
     def __str__(self):
         return self.user.email
     
-class DeliveryProfile(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
-    delivery = models.ForeignKey(DeliveryRegistrationRequests,on_delete=models.CASCADE,null=True)
-    address = models.CharField(max_length=70)
-    country = models.CharField(max_length=70)
-    state = models.CharField(max_length=70)
-    district = models.CharField(max_length=70)
-    pincode = models.CharField(max_length=70)
-    bank = models.CharField(max_length=70)
-    acc_num = models.CharField(max_length=70)
-    ifsc = models.CharField(max_length=70)
-
 
     
 class Product(models.Model):
@@ -203,6 +191,20 @@ class ProductHeadset(models.Model):
     def __str__(self):
         return self.product.product_name
     
+class DeliveryProfile(models.Model):
+    delivery = models.ForeignKey(DeliveryRegistrationRequests,on_delete=models.CASCADE,null=True)
+    address = models.CharField(max_length=70)
+    country = models.CharField(max_length=70)
+    state = models.CharField(max_length=70)
+    district = models.CharField(max_length=70)
+    pincode = models.CharField(max_length=70)
+    bank = models.CharField(max_length=70)
+    acc_num = models.CharField(max_length=70)
+    ifsc = models.CharField(max_length=70)
+
+    def __str__(self):
+        return self.delivery.user.first_name
+
 
 
 class ProductSpeaker(models.Model):
