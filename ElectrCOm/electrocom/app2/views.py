@@ -19,7 +19,7 @@ from .models import sellerRegistrationRequest, DeliveryRegistrationRequests,Deli
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
 #from .forms import UserForm, ServiceForm 
-from django.db.models import Q
+from django.db.models import Q,Sum
 
 User = get_user_model()
 
@@ -731,9 +731,12 @@ def decrease_item(request, item_id):
 @login_required(login_url='/app2/login')
 def orders(request):
     cart = Cart.objects.filter(user_id = request.user.id)
+    total_quantity = cart.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+    print(total_quantity)
     product_name = set(item.product.product_name for item in cart)
     sub_total = sum(item.price*item.quantity for item in cart)
     total_price = sub_total
+    added = total_price+60
     is_empty = not cart.exists()
 
     if is_empty:
@@ -742,11 +745,12 @@ def orders(request):
     context = {
         'cart' : cart,
         'product_name':product_name,
-        'total_price': total_price,
+        'total_quantity':total_quantity,
         'sub_total':sub_total,
-        'total_price': total_price
-
+        'total_price': total_price,
+        'sum':added
     }
+    print(total_quantity)
 
     return render(request,'order.html',context)
 
