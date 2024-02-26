@@ -674,16 +674,23 @@ def delete_cart(request,product_id):
 @login_required(login_url='/app2/login')
 def cart(request):
     product = Cart.objects.filter(user_id=request.user.id)
+    product_name = set(item.product.product_name for item in product)
     sub_total = sum([item.price * item.quantity for item in product])
     total_price = sub_total
     is_empty = not product.exists()
-
+    
     if product.exists():
-        print('hai')
+        print(product_name)
     # cartstock = Cart.objects.filter(user_id=request.user.id)
     if is_empty:
         messages.warning(request, f"Your cart is empty.")
-    return render(request,'cart.html',{'product':product,'total_price':total_price,'sub_total':sub_total,'is_empty':is_empty})
+    context = {
+        'product':product,
+        'total_price':total_price,
+        'sub_total':sub_total,
+        'is_empty':is_empty
+        }
+    return render(request,'cart.html',context)
 
 
 def increase_item(request, item_id):
@@ -721,9 +728,33 @@ def decrease_item(request, item_id):
 
     return redirect('cart')
 
+@login_required(login_url='/app2/login')
+def orders(request):
+    cart = Cart.objects.filter(user_id = request.user.id)
+    product_name = set(item.product.product_name for item in cart)
+    sub_total = sum(item.price*item.quantity for item in cart)
+    total_price = sub_total
+    is_empty = not cart.exists()
+
+    if is_empty:
+        messages.warning(request,"Your cart is empty")
+
+    context = {
+        'cart' : cart,
+        'product_name':product_name,
+        'total_price': total_price,
+        'sub_total':sub_total,
+        'total_price': total_price
+
+    }
+
+    return render(request,'order.html',context)
+
 razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
- 
+
+
+
  
 def payment(request):
     product = Cart.objects.filter(user_id=request.user.id)

@@ -63,6 +63,7 @@ urlpatterns = [
     path('delete/<int:product_id>/',views.delete_cart,name='delete_cart'),
     path('increase_item/<int:item_id>/',views.increase_item,name='increase_item'),
     path('decrease_item/<int:item_id>/',views.decrease_item,name='decrease_item'),
+    path('orders/',views.orders,name='orders'),
     path('payment/',views.payment,name='payment'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     # path('search/', include('haystack.urls')),

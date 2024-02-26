@@ -241,7 +241,8 @@ class Cart(models.Model):
     
     def carttotal(self):
         self.cartstock = self.product.stock
-
+    def __str__(self):
+        return self.product.name
 
 class Order(models.Model):
     class PaymentStatusChoices(models.TextChoices):
@@ -256,7 +257,7 @@ class Order(models.Model):
     currency = models.CharField(max_length=3)
     payment_status = models.CharField(max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
     timestamp = models.DateTimeField(auto_now_add=True)
-    items = models.ManyToManyField(Product)  # Use the correct model name 'Book'
+    items = models.ManyToManyField(Product) 
 
     def str(self):
         return f"Order for {self.user.username}"
@@ -264,19 +265,19 @@ class Order(models.Model):
     class Meta:
         ordering = ['-timestamp']
         
-# class payment(models.Model):
-#     class PaymentStatusChoices(models.TextChoices):
-#         PENDING = 'pending', 'Pending'
-#         SUCCESSFUL = 'successful', 'Successful'
-#         FAILED = 'failed', 'Failed'
-#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
-#     cartstock = models.PositiveIntegerField(default=1)
-#     quantity = models.IntegerField(default=1)
-#     price = models.IntegerField(default=0)
+class payment(models.Model):
+    class PaymentStatusChoices(models.TextChoices):
+        PENDING = 'pending', 'Pending'
+        SUCCESSFUL = 'successful', 'Successful'
+        FAILED = 'failed', 'Failed'
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    cartstock = models.PositiveIntegerField(default=1)
+    quantity = models.IntegerField(default=1)
+    price = models.IntegerField(default=0)
     
-#     def carttotal(self):
-#         self.cartstock = self.product.stock
+    def carttotal(self):
+        self.cartstock = self.product.stock
 
 class Book(models.Model):
     title=models.CharField(max_length=100,unique=True)
