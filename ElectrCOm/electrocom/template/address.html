@@ -13,15 +13,75 @@
           <div class="card">
             DELIVERY ADDRESS
             <form method="post" id="delivery-address-form">
+                {% block address %}
                 {%csrf_token%}
-                <input type="text" name="name" placeholder="name">
-                <input type="number" name="phone" placeholder="Phone Number">
-                <input type="number" name="pincode" placeholder="pincode">
-                <input type="text" name="locality" placeholder="locality">
-                <input type="text" name="address" placeholder="address">
-                <input type="text" name="city" placeholder="city">
-                <input type="text" name="state" placeholder="state">
-                <button type="submit">Add Address</button>
+                <div class="row">
+                    <div class="col-md-3 p-3 ">
+                        <label for="name">name</label>
+                    </div>
+                    <div class="col-md-9 p-3 ">
+                        <input type="text" name="name" placeholder="name" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-3 ">
+                        <label for="phone">Phone</label>
+                    </div>
+                    <div class="col-md-9 p-3 ">
+                        <input type="number" name="phone" placeholder="Phone Number" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-3 ">
+                        <label for="pincode">Pincode</label>
+                    </div>
+                    <div class="col-md-9 p-3 ">
+                        <input type="number" name="pincode" placeholder="pincode" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-3 ">
+                        <label for="locality">locality</label>
+                
+                    </div>
+                    <div class="col-md-9 p-3 ">
+                        <input type="text" name="locality" placeholder="locality" class="form-control">
+                
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-3 ">
+                        <label for="address">address</label>
+                
+                    </div>
+                    <div class="col-md-9 p-3 ">
+                        <input type="text" name="address" placeholder="address" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-3 ">
+                        <label for="city">city</label>
+                
+                    </div>
+                    <div class="col-md-9 p-3 ">
+                        <input type="text" name="city" placeholder="city" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-3 ">
+                        <label for="state">state</label>
+                
+                    </div>
+                    <div class="col-md-9 p-3 ">
+                        <input type="text" name="state" placeholder="state" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <button type="submit">Add Address</button>
+                    </div>
+                </div>
+                {% endblock address %}
             </form>
           </div>
         </div>
