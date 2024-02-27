@@ -175,6 +175,32 @@
     
         <!-- end row -->
         <div class="container">
+          <!-- <div class="row">
+            <div class="card col-lg-8">
+              DELIVERY ADDRESS
+              <form method="post" id="delivery-address-form">
+                  {%csrf_token%}
+                  <input type="text" name="name" placeholder="name">
+                  <input type="number" name="phone" placeholder="Phone Number">
+                  <input type="number" name="pincode" placeholder="pincode">
+                  <input type="text" name="locality" placeholder="locality">
+                  <input type="text" name="address" placeholder="address">
+                  <input type="text" name="city" placeholder="city">
+                  <input type="text" name="state" placeholder="state">
+                  <button type="submit">Add Address</button>
+              </form>
+            </div>
+          </div> -->
+          <div class="row">
+            <div class="card col-lg-8">
+              name
+              <br>
+              address,district, city state
+            </div>
+            <a href='{%url "address" %}'>Add Address</a>
+          </div>
+
+
             <div class="row">
                 <div class="card col-lg-8 mt-4 mb-4 shadow">
                     <div class="title text-center bg-light-blue">
@@ -249,7 +275,7 @@
                                 
                                 <tr>
                                     <td>
-                                        <h4 class="ms-3 " style="color: #fff;">Total Price</h4></td>
+                                        <h4 class="ms-3" style="color: #fff;">Total Price</h4></td>
                                         <td>
                                             <h5 class="ms-3 "style="color: #fff;">{{sum}}</h5>
                                         </td>

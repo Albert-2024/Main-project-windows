@@ -4,17 +4,18 @@ from django.contrib.auth import login as auth_login ,authenticate, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.urls import reverse
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseBadRequest,JsonResponse
+from django.http import HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 # from .forms import ProductForm,SpecificationForm
 
 from django.contrib  import messages,auth
 # from .models import Brand, Category, CustomUser, Product
-from .models import CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile,Profile,SellerProfile
+from .models import Address, CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile,Profile,SellerProfile
 from .models import sellerRegistrationRequest, DeliveryRegistrationRequests,DeliveryProfile, ProductSpeaker,Cart, Wishlist
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
@@ -754,11 +755,28 @@ def orders(request):
 
     return render(request,'order.html',context)
 
+
+@login_required(login_url='app2/login/')
+def address(request):
+    user = request.user.id
+    print(user)
+    if request.method=='POST':
+        add = Address(
+            user = request.user,
+            name = request.POST.get('name'),
+            phone = request.POST.get('phone'),
+            pincode = request.POST.get('pincode'),
+            locality = request.POST.get('locality'),
+            address = request.POST.get('address'),
+            city = request.POST.get('city'),
+            state = request.POST.get('state'),
+        )
+        print(add)
+        add.save()
+    return render(request,'address.html')
+
 razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
-
-
-
  
 def payment(request):
     product = Cart.objects.filter(user_id=request.user.id)

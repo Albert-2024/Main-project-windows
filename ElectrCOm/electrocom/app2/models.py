@@ -243,6 +243,20 @@ class Cart(models.Model):
         self.cartstock = self.product.stock
     def __str__(self):
         return self.product.name
+    
+
+class Address(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    name= models.CharField(max_length=255)
+    phone= models.IntegerField(max_length=12)
+    pincode=models.IntegerField(max_length=6)
+    locality=models.CharField(max_length=100)
+    address=models.TextField(max_length=255,default="")
+    city=models.CharField(max_length=100)
+    state=models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 class Order(models.Model):
     class PaymentStatusChoices(models.TextChoices):

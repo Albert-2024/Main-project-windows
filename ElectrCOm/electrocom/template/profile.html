@@ -130,12 +130,23 @@
 <div class="container mt-2">
   <div class="main-body">
     <div class="row">
-      <div class="col-lg-2">
-
+      <div class="col-lg-3 mt-4">
+          <div class="card">
+            <a href="">
+            <div class="Dashboard card-body">
+              Address
+            </a>
+              <hr>
+            </div>
+              <div class="delivery-profile card-body">
+                <a href="{% url "address" %}">Delivery</a>
+                <hr />
+              </div>
+          </div>
       </div>
       
  
-    <div class="col-lg-10 mb-5">
+    <div class="col-lg-9 mb-5">
         <div class="card mt-4 border shadow">
             <div class="card-body pt-4 ">
               <form method="post" enctype="multipart/form-data">

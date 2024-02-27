@@ -1,0 +1,30 @@
+{% extends "profile.html" %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="card">
+            DELIVERY ADDRESS
+            <form method="post" id="delivery-address-form">
+                {%csrf_token%}
+                <input type="text" name="name" placeholder="name">
+                <input type="number" name="phone" placeholder="Phone Number">
+                <input type="number" name="pincode" placeholder="pincode">
+                <input type="text" name="locality" placeholder="locality">
+                <input type="text" name="address" placeholder="address">
+                <input type="text" name="city" placeholder="city">
+                <input type="text" name="state" placeholder="state">
+                <button type="submit">Add Address</button>
+            </form>
+          </div>
+        </div>
+    </div>
+</body>
+</html>
