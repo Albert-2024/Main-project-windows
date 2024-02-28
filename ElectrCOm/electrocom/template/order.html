@@ -55,6 +55,12 @@
             border: 1px solid #eff0f2;
             border-radius: 1rem;
         }
+        h1{
+          font-family: 'Times New Roman', Times, serif;
+        }
+        h3{
+          font-family: 'Times New Roman', Times, serif;
+        }
     </style>
       <link rel="stylesheet" type="text/css" href='{% static "new_style/css/bootstrap.min.css"%} '>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -192,13 +198,23 @@
             </div>
           </div> -->
           <div class="row">
+           
             <div class="card col-lg-8">
-              {{address.name}}
-              <br>
-              {{address.address}},{{address.district}}, {{address.city}}, {{address.state}}
+              <div class="address text-center ">
+                <div class="card-body">
+              <h1 class="bg-light-blue ">Address</h1>
             </div>
-            <a href='{%url "address" %}'>Add Address</a>
+            <hr>
+              </div>
+              
+              <div class="card-body">
+              <h5>{{address.name}}</h5>
+              <h6>{{address.address}},{{address.district}}, {{address.city}}, {{address.state}}</h6> 
+            </div>
           </div>
+
+          </div>
+          <!-- <a href='{%url "address" %}' class="btn btn-success">+ Add Address</a> -->
 
 
             <div class="row">

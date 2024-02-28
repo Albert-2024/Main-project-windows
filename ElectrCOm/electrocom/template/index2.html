@@ -90,11 +90,14 @@
 
                       </a>
                     </li>
+
+                  {%if user.is_authenticated%}
                     <li  class="pe-3 mt-1">
                       <a href="{%url 'cart'%}">
                         <i class="fa-solid fa-cart-shopping ms-3"></i>
                       </a>
                     </li>
+                  {%endif%}
 
                     <li>
                       <div class="dropdown pe-3 mt-1" >
@@ -103,7 +106,6 @@
                         </a>
                         {% if user.is_authenticated %}
                            {{user.first_name}}
-
                           <div class="dropdown-menu" style="margin-left: -90px;">
                             <a href='{% url "profile" %}' class="dropdown-item">Profile</a>
                             <a href="{% url 'sellerreg' %}" class="dropdown-item nav-linkd text-decoration-none">Become a seller</a>
