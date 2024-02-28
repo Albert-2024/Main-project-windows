@@ -143,7 +143,9 @@
             <hr />
           </div>
           <div class="details">
-            Details
+            {% for i in view %}
+              <p>{{i.name}}</p>
+            {% endfor %}
           </div>
           </div>
           </div>

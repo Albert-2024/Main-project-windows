@@ -132,7 +132,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255, null=True)
     product_name = models.CharField(max_length=255, null=True)
     brand_name = models.CharField(max_length=255, null=True)
-    price = models.CharField(max_length=255, null=True)
+    price = models.DecimalField(max_digits=10,decimal_places=2, default=0)
     image1 = models.ImageField(upload_to='sample/', null=True, blank=True, max_length=255)
     image2 = models.ImageField(upload_to='sample/', null=True, blank=True, max_length=255)
     image3 = models.ImageField(upload_to='sample/', null=True, blank=True, max_length=255)
@@ -271,7 +271,7 @@ class Order(models.Model):
     currency = models.CharField(max_length=3)
     payment_status = models.CharField(max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
     timestamp = models.DateTimeField(auto_now_add=True)
-    items = models.ManyToManyField(Product) 
+    items = models.ManyToManyField(Cart)
 
     def str(self):
         return f"Order for {self.user.username}"
@@ -289,9 +289,16 @@ class payment(models.Model):
     cartstock = models.PositiveIntegerField(default=1)
     quantity = models.IntegerField(default=1)
     price = models.IntegerField(default=0)
+    status = models.CharField(
+        max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING
+    )
     
     def carttotal(self):
         self.cartstock = self.product.stock
+
+
+
+
 
 class Book(models.Model):
     title=models.CharField(max_length=100,unique=True)

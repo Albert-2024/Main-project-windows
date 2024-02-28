@@ -732,8 +732,8 @@ def decrease_item(request, item_id):
 @login_required(login_url='/app2/login')
 def orders(request):
     cart = Cart.objects.filter(user_id = request.user.id)
+    address = Address.objects.filter(user_id=request.user.id).first()
     total_quantity = cart.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-    print(total_quantity)
     product_name = set(item.product.product_name for item in cart)
     sub_total = sum(item.price*item.quantity for item in cart)
     total_price = sub_total
@@ -745,6 +745,7 @@ def orders(request):
 
     context = {
         'cart' : cart,
+        'address':address,
         'product_name':product_name,
         'total_quantity':total_quantity,
         'sub_total':sub_total,
@@ -759,6 +760,8 @@ def orders(request):
 @login_required(login_url='app2/login/')
 def address(request):
     user = request.user.id
+    view = Address.objects.filter(user_id = request.user.id)
+    print(view)
     print(user)
     if request.method=='POST':
         add = Address(
@@ -771,23 +774,28 @@ def address(request):
             city = request.POST.get('city'),
             state = request.POST.get('state'),
         )
-        print(add)
+        
+        
         add.save()
     return render(request,'address.html')
+
+
 
 razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
  
 def payment(request):
-    product = Cart.objects.filter(user_id=request.user.id)
+    cart = Cart.objects.filter(user_id=request.user.id)
+    print(cart)
     currency = 'INR'
-    sub_total = sum([item.price * item.quantity for item in product])
+    sub_total = sum([item.product.price * item.quantity for item in cart])
     total_price = Decimal(sub_total)
     amount = int(total_price * 100) 
     
     razorpay_order = razorpay_client.order.create(dict(amount=amount,
                                                        currency=currency,
                                                        payment_capture='0'))
+    # print(razorpay_order)
  
     razorpay_order_id = razorpay_order['id']
     from django.urls import reverse
@@ -797,18 +805,20 @@ def payment(request):
     
     order = Order.objects.create(
         user = request.user,
-        amount = amount,
-        
+        amount = total_price,
         razorpay_order_id = razorpay_order_id,
         payment_status = Order.PaymentStatusChoices.PENDING
     )
+    for cart in cart:
+        order.items.add(cart)
     
     order.save()
+    print(order)
  
     
     context = {
-        'cart_item': product,
-        'amount': amount,
+        'cart': cart,
+        'amount': total_price,
         'razorpay_order_id': razorpay_order_id,
         'razorpay_merchant_key': settings.RAZOR_KEY_ID,
         'razorpay_amount': amount,  # Set to 'total_price'
@@ -824,15 +834,15 @@ def payment(request):
     
     return render(request, 'payment.html', context=context)
  
- 
+
+
 
 @csrf_exempt
 def paymenthandler(request):
     print("paymenthandler")
    
     if request.method == "POST":
-
-            
+              
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
             signature = request.POST.get('razorpay_signature', '')
@@ -847,11 +857,12 @@ def paymenthandler(request):
                 params_dict)
             if result is not None:
                  payment = Order.objects.get(razorpay_order_id= razorpay_order_id)
-                 razorpay_order = razorpay_client.order.fetch(razorpay_order_id)
-                 authorized_amount = razorpay_order['amount']
+                 amount=int(payment.amount*100)
+                #  razorpay_order = razorpay_client.order.fetch(razorpay_order_id)
+                #  authorized_amount = razorpay_order['amount']
 
            
-                 razorpay_client.payment.capture(payment_id, authorized_amount)
+                 razorpay_client.payment.capture(payment_id, amount)
                  payment.payment_id = payment_id
                  payment.payment_status = payment.PaymentStatusChoices.SUCCESSFUL
                  payment.save()
@@ -865,7 +876,14 @@ def paymenthandler(request):
     else:
        
         return HttpResponseBadRequest()
-    
+
+
+
+
+
+
+
+
 # def product_search(request):
 #     query = request.GET.get('q')
 #     print(query)
