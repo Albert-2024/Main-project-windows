@@ -742,6 +742,7 @@ def orders(request):
 
     if is_empty:
         messages.warning(request,"Your cart is empty")
+        return redirect('cart')
 
     context = {
         'cart' : cart,
@@ -836,7 +837,6 @@ def payment(request):
  
 
 
-
 @csrf_exempt
 def paymenthandler(request):
     print("paymenthandler")
@@ -865,6 +865,8 @@ def paymenthandler(request):
                  razorpay_client.payment.capture(payment_id, amount)
                  payment.payment_id = payment_id
                  payment.payment_status = payment.PaymentStatusChoices.SUCCESSFUL
+                 cart_items=Cart.objects.filter(user_id=request.user.id)
+                 cart_items.delete()
                  payment.save()
                  
                  return redirect('http://127.0.0.1:8000/')
