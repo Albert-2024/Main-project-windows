@@ -170,35 +170,41 @@ def login(request):
 
 @login_required(login_url='/app2/login')
 def delivery_form2(request):
-    user=request.user.id
-    print("1st user",user)
-    currentUser=DeliveryRegistrationRequests.objects.get(user=user)
-    if currentUser.status=='PENDING':
-            print("Already registered")
-            return render(request,"delivery/waiting.html") # create a waiting page
-    elif currentUser.status=='APPROVED':
-        return redirect('delivery_index')
-    else:
-        if request.method == 'POST':
-            rc_num = request.POST.get('rc_num')
-            lic_num = request.POST.get('lic_num')
-            aadhar_num = request.POST.get('aadhar_num')
-            pan = request.POST.get('pan')
+    user=request.user
+    try:
+        try:
+            currentUser=DeliveryRegistrationRequests.objects.get(user=user)
+        except:
+            currentUser=None
+        print(currentUser)
+        if currentUser:
+            if currentUser.status=="PENDING":
+                return render(request,"delivery/waiting.html") # create a waiting page
+            elif currentUser.status=='APPROVED':
+                return redirect('delivery_index')
+        else:
+            if request.method == 'POST':
+                rc_num = request.POST.get('rc_num')
+                lic_num = request.POST.get('lic_num')
+                aadhar_num = request.POST.get('aadhar_num')
+                pan = request.POST.get('pan')
 
-            if not rc_num and not lic_num and not aadhar_num and not pan:
-                return render(request,"delivery_form2.html",{'error':'enter details'})
+                if not rc_num and not lic_num and not aadhar_num and not pan:
+                    return render(request,"delivery_form2.html",{'error':'enter details'})
 
-            registration_request = DeliveryRegistrationRequests(
-                user=request.user,
-                rc_num=rc_num,
-                lic_num=lic_num,
-                aadhar_num=aadhar_num,
-                pan=pan
+                registration_request = DeliveryRegistrationRequests(
+                    user=request.user,
+                    rc_num=rc_num,
+                    lic_num=lic_num,
+                    aadhar_num=aadhar_num,
+                    pan=pan
 
-                )
-            registration_request.save()
-            print("success")
-            return redirect('waiting') #After create a waiting page
+                    )
+                registration_request.save()
+                print("success")
+                return redirect('waiting') #After create a waiting page
+    except ObjectDoesNotExist:
+        print("DeliveryRegistrationRequests does not exist for the current user")
         
     return render(request, 'delivery/delivery_form2.html')
 

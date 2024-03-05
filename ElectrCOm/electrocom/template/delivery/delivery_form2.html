@@ -73,30 +73,29 @@
                         {% csrf_token %}
                         <div class="col-12">
                           <label for="yourName" class="form-label">Enter RC number of your vehicle </label>
-    
                           <input type="text" name="rc_num" class="form-control" id="rc_num" required>
-                          <div class="invalid-feedback">Please, enter your RC number!</div>
+                          <div id="rc-error" class="invalid-feedback">Please, enter your RC number!</div>
                         </div>
     
                         <div class="col-12">
     
                           <label for="lic_num" class="form-label">Your License Number</label>
                           <input type="text" name="lic_num" class="form-control" id="lic_num" required>
-                          <div class="invalid-feedback">Please enter a valid License Number!</div>
+                          <div id="license-error" class="invalid-feedback">Please enter a valid License Number!</div>
                         </div>
     
                         <div class="col-12">
                           <label for="aadhar_num" class="form-label">Aadhar_number</label>
                           <div class="input-group has-validation">
                             <input type="text" name="aadhar_num" class="form-control" id="aadhar_num" required>
-                            <div class="invalid-feedback">Please Enter your Aadhar number.</div>
+                            <div id="aadhar-error" class="invalid-feedback">Please Enter your Aadhar number.</div>
                           </div>
                         </div>
     
                         <div class="col-12">
                           <label for="pan" class="form-label">PAN Number</label>
                           <input type="text" name="pan" class="form-control" id="pan" required>
-                          <div class="invalid-feedback">Please enter Pan card details!</div>
+                          <div id="pan-error" class="invalid-feedback">Please enter Pan card details!</div>
                         </div>
     
                         <div class="col-12">
@@ -132,7 +131,60 @@
       </main><!-- End #main -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<script>
+  document.addEventListener('DOMContentLoaded',function(){
+    const licNumInput = document.getElementById('lic_num');
+    const licenseError = document.getElementById('license-error');
+    licNumInput.addEventListener('input',function(event){
+      const inputValue  = event.target.value;
+      const regex = /^[A-Za-z]{2}\d{2}\s\d{11}$/;
+      if(!regex.test(inputValue)){
+        licenseError.style.display = "block"
+      }else{
+        licenseError.style.display = "none"
+      }
+    });
+    const rcNumInput = document.getElementById('rc_num');
+    const rcInvalid = document.getElementById('rc-error');
+    rcNumInput.addEventListener('input',function(event){
+      const inputValue = event.target.value;
+      const regex = /^[A-Za-z]{2}\d{2}[A-Za-z]{2}\d{4}$/;
+      if(!regex.test(inputValue)){
+        rcInvalid.style.display="block"
+      }else{
+        rcInvalid.style.display="none"
+        console.log('hello')
 
+      }
+    });
+
+    const AadharInput = document.getElementById('aadhar_num');
+    const AadharError = document.getElementById('aadhar-error');
+    AadharInput.addEventListener('input',function(event){
+      const value = event.target.value;
+      const regex = /^\d{4}\s\d{4}\s\d{4}$/;
+      if(!regex.test(value)){
+        AadharError.style.display="block"
+      }
+      else{
+        AadharError.style.display="none";
+      }
+    });
+    const PanInput=document.getElementById('pan')
+    const PanError = document.getElementById('pan-error')
+    PanInput.addEventListener('input',function(event){
+      const value = event.target.value;
+      const regex = /^[A-Za-z]{5}\d{4}[A-Za-z]{1}$/;
+      if(!regex.test(value)){
+        PanError.style.display="block";
+      }
+      else{
+        PanError.style.display="none";
+      }
+    });
+  });
+
+</script>
   <!-- Vendor JS Files -->
   <script src='{% static "assets/vendor/apexcharts/apexcharts.min.js" %}'></script>
   <script src='{% static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}'></script>

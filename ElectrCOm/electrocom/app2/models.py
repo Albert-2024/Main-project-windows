@@ -106,7 +106,7 @@ class sellerRegistrationRequest(models.Model):
 class DeliveryRegistrationRequests(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     status =  models.CharField(max_length=10,choices=[('PENDING','Pending'),('APPROVED','Approved'),('REJECTED','Rejected')],default='PENDING')
-    lic_num = models.CharField(max_length=15,blank=False)
+    lic_num = models.CharField(max_length=30,blank=False)
     rc_num = models.CharField(max_length=30)
     pan = models.CharField(max_length=30)
     aadhar_num=models.CharField(max_length=40)
@@ -204,7 +204,6 @@ class DeliveryProfile(models.Model):
 
     def __str__(self):
         return self.delivery.user.first_name
-
 
 
 class ProductSpeaker(models.Model):
