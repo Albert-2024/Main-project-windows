@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.db import transaction
 # from .forms import ProductForm,SpecificationForm
 
 from django.contrib  import messages,auth
@@ -661,14 +662,23 @@ def addtocart(request,product_id):
     cart_item, created = Cart.objects.get_or_create(product_id=product_id,user_id = request.user.id)
    
     if created:
-        cart_item.price = product.price
-        cart_item.save()
-        
+        if product.stock > 0:
+            cart_item.price = product.price
+            cart_item.save()
+            product.stock -= 1
+            product.save()
+        else:
+            messages.warning(request, f"{cart_item.product.product_name} is out of stock.")
     return redirect('cart')
 
 def delete_cart(request,product_id):
-    remove = Cart.objects.filter(id=product_id)
-    remove.delete()
+    cart_item = Cart.objects.filter(id=product_id)
+    for cart_item in cart_item:
+        product = cart_item.product
+        deleted_quantity = cart_item.quantity
+        cart_item.delete()
+        product.stock += deleted_quantity
+        product.save()
     return redirect('cart')
 
 
@@ -749,7 +759,7 @@ def orders(request):
         'address':address,
         'product_name':product_name,
         'total_quantity':total_quantity,
-        'sub_total':sub_total,
+        'sub_total':sub_total,  
         'total_price': total_price,
         'sum':added
     }
@@ -856,18 +866,25 @@ def paymenthandler(request):
             result = razorpay_client.utility.verify_payment_signature(
                 params_dict)
             if result is not None:
-                 payment = Order.objects.get(razorpay_order_id= razorpay_order_id)
-                 amount=int(payment.amount*100)
+                 with transaction.atomic():
+                    payment = Order.objects.get(razorpay_order_id= razorpay_order_id)
+                    amount=int(payment.amount*100)
                 #  razorpay_order = razorpay_client.order.fetch(razorpay_order_id)
                 #  authorized_amount = razorpay_order['amount']
 
            
-                 razorpay_client.payment.capture(payment_id, amount)
-                 payment.payment_id = payment_id
-                 payment.payment_status = payment.PaymentStatusChoices.SUCCESSFUL
-                 cart_items=Cart.objects.filter(user_id=request.user.id)
-                 cart_items.delete()
-                 payment.save()
+                    razorpay_client.payment.capture(payment_id, amount)
+                    payment.payment_id = payment_id
+                    payment.payment_status = payment.PaymentStatusChoices.SUCCESSFUL
+                    payment.save()
+
+                    for order_item in payment.items.all():
+                        product = order_item.product
+                        product.stock -= order_item.quantity
+                        product.save()
+
+                    cart_items=Cart.objects.filter(user_id=request.user.id)
+                    cart_items.delete()
                  
                  return redirect('http://127.0.0.1:8000/')
                 
@@ -878,11 +895,6 @@ def paymenthandler(request):
     else:
        
         return HttpResponseBadRequest()
-
-
-
-
-
 
 
 
