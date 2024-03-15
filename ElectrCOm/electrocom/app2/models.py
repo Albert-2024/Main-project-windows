@@ -136,7 +136,7 @@ class Product(models.Model):
     image1 = models.ImageField(upload_to='sample/', null=True, blank=True, max_length=255)
     image2 = models.ImageField(upload_to='sample/', null=True, blank=True, max_length=255)
     image3 = models.ImageField(upload_to='sample/', null=True, blank=True, max_length=255)
-    description = models.TextField(max_length=255, null=True)
+    description = models.TextField(max_length=1000, null=True)
     category = models.CharField(max_length=255, null=True)
     stock = models.PositiveIntegerField(max_length=255, default=0)
     

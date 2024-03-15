@@ -69,14 +69,14 @@
     </a>
   </li>
   {% endblock home %}
-  {% block add_products %}
+  {% block select_orders %}
   <li class="nav-item">
-    <a class="nav-link " href="http://127.0.0.1:8000/app2/delivery/delivery_index">
+      <a class="nav-link " href="{% url 'arrivals' %}">
       <i class="bi bi-card-list"></i>
-      <span>Select Schedules</span>
+      <span>Select Orders</span>
     </a>
   </li>
-  {% endblock add_products  %}
+  {% endblock select_orders  %}
 
 </body>
 </html>

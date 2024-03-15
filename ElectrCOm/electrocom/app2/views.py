@@ -218,6 +218,12 @@ def delivery_index(request):
     return render(request,'delivery/delivery_index.html')
 
 @login_required(login_url='/app2/login')
+def arrivals(request):
+    user=request.user
+    print(user)
+    return render(request,'delivery/arrivals.html')
+
+@login_required(login_url='/app2/login')
 def delivery_profile(request):
     # Fetch DeliveryRegistrationRequests object for the current user
     data = DeliveryRegistrationRequests.objects.get(user=request.user)
@@ -500,8 +506,6 @@ def addheadset(request,product_id):
     userid = user.id
     head=ProductHeadset.objects.get(product_id=product_id)
     if request.method == 'POST':
-        
-        print(head)
         head.battery = request.POST.get('battery')
         head.color = request.POST.get('color')
         head.form_factor = request.POST.get('form_factor')
@@ -509,8 +513,7 @@ def addheadset(request,product_id):
         head.weight = request.POST.get('weight')
         head.charging = request.POST.get('charging')
         head.working = request.POST.get('working')
-        head.stock = request.POST.get('stock')
-        
+        head.stock = request.POST.get('stock') 
         print(head)
         head.save()   
         
@@ -664,7 +667,9 @@ def wishlist(request):
 @login_required(login_url='/app2/login')
 def addtocart(request,product_id):
     product = get_object_or_404(Product, id=product_id)
-    print(product)
+    print(product.stock)
+
+    quantity = product.stock
     cart_item, created = Cart.objects.get_or_create(product_id=product_id,user_id = request.user.id)
    
     if created:
@@ -778,8 +783,6 @@ def orders(request):
 def address(request):
     user = request.user.id
     view = Address.objects.filter(user_id = request.user.id)
-    print(view)
-    print(user)
     if request.method=='POST':
         add = Address(
             user = request.user,
@@ -796,23 +799,19 @@ def address(request):
         add.save()
     return render(request,'address.html')
 
-
-
 razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
  
 def payment(request):
     cart = Cart.objects.filter(user_id=request.user.id)
-    print(cart)
     currency = 'INR'
     sub_total = sum([item.product.price * item.quantity for item in cart])
-    total_price = Decimal(sub_total)
+    total_price = Decimal(sub_total+60)
     amount = int(total_price * 100) 
     
     razorpay_order = razorpay_client.order.create(dict(amount=amount,
                                                        currency=currency,
                                                        payment_capture='0'))
-    # print(razorpay_order)
  
     razorpay_order_id = razorpay_order['id']
     from django.urls import reverse
@@ -856,7 +855,6 @@ def payment(request):
 @csrf_exempt
 def paymenthandler(request):
     print("paymenthandler")
-   
     if request.method == "POST":
               
             payment_id = request.POST.get('razorpay_payment_id', '')
@@ -877,8 +875,12 @@ def paymenthandler(request):
                     amount=int(payment.amount*100)
                 #  razorpay_order = razorpay_client.order.fetch(razorpay_order_id)
                 #  authorized_amount = razorpay_order['amount']
+    
+                    for order_item in payment.items.all():
+                        product = order_item.product
+                        if product.stock < order_item.quantity:
+                            return render(request,'paymentfail.html',{'messages':'insufficient stock'})
 
-           
                     razorpay_client.payment.capture(payment_id, amount)
                     payment.payment_id = payment_id
                     payment.payment_status = payment.PaymentStatusChoices.SUCCESSFUL

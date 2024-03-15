@@ -50,12 +50,13 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
+    <!-- <div class="search-bar">
       <form class="search-form d-flex align-items-center" method="POST" action="#">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
-    </div><!-- End Search Bar -->
+    </div> -->
+    <!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -64,7 +65,8 @@
           <a class="nav-link nav-icon search-bar-toggle " href="#">
             <i class="bi bi-search"></i>
           </a>
-        </li><!-- End Search Icon-->
+        </li>
+        <!-- End Search Icon-->
 
         <li class="nav-item dropdown pe-3">
 
@@ -85,7 +87,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center">
+              <a href="{% url 'delivery_profile' %}" class="dropdown-item d-flex align-items-center">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -120,14 +122,14 @@
         </a>
       </li>
       {% endblock home %}
-      {% block add_products %}
+      {% block select_orders %}
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " href="{% url 'arrivals' %}">
           <i class="bi bi-card-list"></i>
-          <span>Select Schedules</span>
+          <span>Select orders</span>
         </a>
       </li>
-      {% endblock add_products %}
+      {% endblock select_orders %}
       {% block profile %}
       <li class="nav-item">
         <a class="nav-link collapsed"  href="{% url 'delivery_profile' %}">
