@@ -220,8 +220,8 @@ def delivery_index(request):
 @login_required(login_url='/app2/login')
 def arrivals(request):
     user=request.user
-    print(user)
-    return render(request,'delivery/arrivals.html')
+    order = Order.objects.filter()
+    return render(request,'delivery/arrivals.html',{'order':order})
 
 @login_required(login_url='/app2/login')
 def delivery_profile(request):
@@ -751,15 +751,24 @@ def decrease_item(request, item_id):
     return redirect('cart')
 
 @login_required(login_url='/app2/login')
+def get_user_address(user):
+    return user
+
+
+@login_required(login_url='/app2/login/')
 def orders(request):
     cart = Cart.objects.filter(user_id = request.user.id)
-    address = Address.objects.filter(user_id=request.user.id).first()
+    address = Address.objects.first()
+    address_id = address.id
     total_quantity = cart.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
     product_name = set(item.product.product_name for item in cart)
     sub_total = sum(item.price*item.quantity for item in cart)
     total_price = sub_total
     added = total_price+60
     is_empty = not cart.exists()
+
+    if not address:
+        print("no address")
 
     if is_empty:
         messages.warning(request,"Your cart is empty")
@@ -768,6 +777,7 @@ def orders(request):
     context = {
         'cart' : cart,
         'address':address,
+        'address_id':address_id,
         'product_name':product_name,
         'total_quantity':total_quantity,
         'sub_total':sub_total,  
@@ -779,10 +789,12 @@ def orders(request):
     return render(request,'order.html',context)
 
 
-@login_required(login_url='app2/login/')
+@login_required(login_url='/app2/login/')
 def address(request):
     user = request.user.id
     view = Address.objects.filter(user_id = request.user.id)
+    addresses = Address.objects.filter(user=request.user)
+
     if request.method=='POST':
         add = Address(
             user = request.user,
@@ -794,20 +806,27 @@ def address(request):
             city = request.POST.get('city'),
             state = request.POST.get('state'),
         )
-        
-        
         add.save()
-    return render(request,'address.html')
+
+    context = {
+        'addresses': addresses
+    }
+        
+    return render(request,'address.html',context)
 
 razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
  
 def payment(request):
-    cart = Cart.objects.filter(user_id=request.user.id)
+    cart = Cart.objects.filter(user_id=request.user)
+    address= Address.objects.first().id
     currency = 'INR'
     sub_total = sum([item.product.price * item.quantity for item in cart])
     total_price = Decimal(sub_total+60)
-    amount = int(total_price * 100) 
+    amount = int(total_price * 100)
+    print(address)
+    # address = get_user_address(request.user)
+    # print(address)
     
     razorpay_order = razorpay_client.order.create(dict(amount=amount,
                                                        currency=currency,
@@ -823,8 +842,10 @@ def payment(request):
         user = request.user,
         amount = total_price,
         razorpay_order_id = razorpay_order_id,
-        payment_status = Order.PaymentStatusChoices.PENDING
+        payment_status = Order.PaymentStatusChoices.PENDING,
+        address_id = address
     )
+    
     for cart in cart:
         order.items.add(cart)
     
@@ -849,21 +870,20 @@ def payment(request):
         # context['callback_url'] = callback_url
     
     return render(request, 'payment.html', context=context)
- 
-
 
 @csrf_exempt
 def paymenthandler(request):
     print("paymenthandler")
     if request.method == "POST":
-              
+            address_id = request.POST.get('address_id','') 
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
             signature = request.POST.get('razorpay_signature', '')
             params_dict = {
                 'razorpay_order_id': razorpay_order_id,
                 'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
+                'razorpay_signature': signature,
+                'address_id':address_id,
             }
  
           

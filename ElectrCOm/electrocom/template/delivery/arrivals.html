@@ -20,7 +20,9 @@
 
     {% block body %}
       <div class="card">
-        
+        {% for i in order %}
+          {{i}}
+        {% endfor %}
       </div>
     {% endblock body %}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

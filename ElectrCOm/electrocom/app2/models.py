@@ -246,16 +246,16 @@ class Cart(models.Model):
 
 class Address(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
-    name= models.CharField(max_length=255)
+    name= models.CharField(max_length=100)
     phone= models.IntegerField(max_length=12)
     pincode=models.IntegerField(max_length=6)
     locality=models.CharField(max_length=100)
-    address=models.TextField(max_length=255,default="")
+    address=models.TextField(max_length=255, null=True, default=None)
     city=models.CharField(max_length=100)
     state=models.CharField(max_length=20)
 
     def __str__(self):
-        return self.name
+        return self.name + "-" + self.address
 
 class Order(models.Model):
     class PaymentStatusChoices(models.TextChoices):
@@ -271,6 +271,7 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=20, choices=PaymentStatusChoices.choices, default=PaymentStatusChoices.PENDING)
     timestamp = models.DateTimeField(auto_now_add=True)
     items = models.ManyToManyField(Cart)
+    address = models.ForeignKey(Address,on_delete=models.CASCADE,null=True)
 
     def str(self):
         return f"Order for {self.user.username}"
@@ -294,6 +295,12 @@ class payment(models.Model):
     
     def carttotal(self):
         self.cartstock = self.product.stock
+
+
+
+
+
+
 
 class Book(models.Model):
     title=models.CharField(max_length=100,unique=True)

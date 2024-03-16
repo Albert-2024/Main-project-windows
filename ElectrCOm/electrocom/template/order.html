@@ -208,8 +208,11 @@
               </div>
               
               <div class="card-body">
+                <form action="{%url 'payment' %}" method="post">
+                  <input type="hidden" name="address_id" value="{{address.id}}">
               <h5>{{address.name}}</h5>
               <h6>{{address.address}},{{address.district}}, {{address.city}}, {{address.state}}</h6> 
+            </form>
             </div>
           </div>
 
@@ -299,10 +302,15 @@
                             </table>
                             
                         </div>
-                        <div class="text-sm-end mt-2 mt-sm-0">
+                        <!-- <div class="text-sm-end mt-2 mt-sm-0">
                           <a href="{% url 'payment' %}" class="btn btn-success">
                               <i class="mdi mdi-cart-outline me-1"></i> Checkout </a>
-                      </div>
+                      </div> -->
+                      <form action="{%url 'payment' %}" method="post">
+                      {% csrf_token %}
+                        <input type="hidden" name="address_id" value="{{address_id}}">
+                        <button type="submit">Checkout</button>
+                      </form>
                      </div>
             </div>
         </div>

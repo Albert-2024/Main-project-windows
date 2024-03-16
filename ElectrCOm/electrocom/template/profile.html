@@ -142,6 +142,21 @@
             <a href="{% url "address" %}">Delivery</a>
             <hr />
           </div>
+          {% if addresses %}
+          {% for i in addresses %}
+          <div class="card">
+            <div class="card-body">
+                {{i.name}}
+                {{i.phone}}
+                {{i.pincode}}
+                {{i.locality}}
+                {{i.city}}
+                {{i.address}}
+                {{i.state}} 
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
           <div class="details">
             {% for i in view %}
               <p>{{i.name}}</p>
