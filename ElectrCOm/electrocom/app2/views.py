@@ -220,8 +220,26 @@ def delivery_index(request):
 @login_required(login_url='/app2/login')
 def arrivals(request):
     user=request.user
-    order = Order.objects.filter()
-    return render(request,'delivery/arrivals.html',{'order':order})
+    successfull_orders = Order.objects.filter(payment_status=Order.PaymentStatusChoices.SUCCESSFUL)
+    unique_addresses=[]
+    for order in successfull_orders:
+        if order.address:
+            if order.address not in unique_addresses:
+                unique_addresses.append(order.address)
+    order_products={}
+    for order in successfull_orders:
+        products = [item.product_name for item in order.items.all()]
+        order_products[order]=products 
+        # print(products)  
+              
+    context = {
+        'unique_addresses': unique_addresses,
+        'order_products': order_products
+    }
+    # print(order_products)
+
+    return render(request,'delivery/arrivals.html',context)
+
 
 @login_required(login_url='/app2/login')
 def delivery_profile(request):
@@ -758,14 +776,17 @@ def get_user_address(user):
 @login_required(login_url='/app2/login/')
 def orders(request):
     cart = Cart.objects.filter(user_id = request.user.id)
-    address = Address.objects.first()
-    address_id = address.id
     total_quantity = cart.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
     product_name = set(item.product.product_name for item in cart)
     sub_total = sum(item.price*item.quantity for item in cart)
     total_price = sub_total
     added = total_price+60
     is_empty = not cart.exists()
+    try:
+        address = Address.objects.get(user=request.user)
+        address_id = address.id
+    except Address.DoesNotExist:
+        address=None
 
     if not address:
         print("no address")
@@ -785,6 +806,11 @@ def orders(request):
         'sum':added
     }
     print(total_quantity)
+
+    for order in Order.objects.all():
+        for cart in order.items.all():
+            product_id = cart.product.id
+            print(product_id)
 
     return render(request,'order.html',context)
 
@@ -825,6 +851,8 @@ def payment(request):
     total_price = Decimal(sub_total+60)
     amount = int(total_price * 100)
     print(address)
+    print("product")
+    product_ids = [item.product.id for item in cart]
     # address = get_user_address(request.user)
     # print(address)
     
@@ -843,8 +871,9 @@ def payment(request):
         amount = total_price,
         razorpay_order_id = razorpay_order_id,
         payment_status = Order.PaymentStatusChoices.PENDING,
-        address_id = address
+        address_id = address,
     )
+    order.product_ids.set(product_ids)
     
     for cart in cart:
         order.items.add(cart)

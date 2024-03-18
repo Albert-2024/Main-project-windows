@@ -19,11 +19,26 @@
     {% endblock head %}
 
     {% block body %}
+    
+   
+      {% for address in unique_addresses %}
+      {% for order in order_products%}
       <div class="card">
-        {% for i in order %}
-          {{i}}
-        {% endfor %}
-      </div>
+           <h3 style="font-family: monospace; text-transform: uppercase;">{{order}},</h3> 
+            <br>
+              <h5 style="text-transform: capitalize;"> address: &nbsp;&nbsp;&nbsp;&nbsp;{{address}}, 
+                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{address.locality}} {{address.pincode}}</>
+              </div>
+          {%endfor%}
+          <!-- {%for order,product in order_products.items %}
+            {%if order.address == address %}
+                {% for product in products%}
+                    <li>{{product}}</li>
+                  {%endfor%}
+              {%endif%}
+            {%endfor%} -->
+            {% endfor %}
+
     {% endblock body %}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

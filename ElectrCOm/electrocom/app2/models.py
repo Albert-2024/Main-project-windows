@@ -272,13 +272,19 @@ class Order(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     items = models.ManyToManyField(Cart)
     address = models.ForeignKey(Address,on_delete=models.CASCADE,null=True)
+    product_ids = models.ManyToManyField(Product,related_name='orders')
 
-    def str(self):
-        return f"Order for {self.user.username}"
+    @property
+    def product_names(self):
+        product_names = ', ' .join([str(product) for product in self.product_ids.all()])
+        return product_names
+
+    def __str__(self):
+        return f"Order for {self.user.first_name} | {self.product_names}" 
 
     class Meta:
         ordering = ['-timestamp']
-        
+    
 class payment(models.Model):
     class PaymentStatusChoices(models.TextChoices):
         PENDING = 'pending', 'Pending'
