@@ -226,12 +226,13 @@ def arrivals(request):
         if order.address:
             if order.address not in unique_addresses:
                 unique_addresses.append(order.address)
+    print(unique_addresses)
     order_products={}
     for order in successfull_orders:
         products = [item.product_name for item in order.items.all()]
         order_products[order]=products 
         # print(products)  
-              
+    print(order_products)    
     context = {
         'unique_addresses': unique_addresses,
         'order_products': order_products
@@ -814,6 +815,9 @@ def orders(request):
 
     return render(request,'order.html',context)
 
+def accepted(request):
+
+    return render(request,'delivery/accepted.html')
 
 @login_required(login_url='/app2/login/')
 def address(request):
@@ -845,7 +849,7 @@ razorpay_client = razorpay.Client(
  
 def payment(request):
     cart = Cart.objects.filter(user_id=request.user)
-    address= Address.objects.first().id
+    address= Address.objects.get(user_id=request.user.id)
     currency = 'INR'
     sub_total = sum([item.product.price * item.quantity for item in cart])
     total_price = Decimal(sub_total+60)
@@ -854,7 +858,7 @@ def payment(request):
     print("product")
     product_ids = [item.product.id for item in cart]
     # address = get_user_address(request.user)
-    # print(address)
+    print(address)
     
     razorpay_order = razorpay_client.order.create(dict(amount=amount,
                                                        currency=currency,
@@ -871,7 +875,7 @@ def payment(request):
         amount = total_price,
         razorpay_order_id = razorpay_order_id,
         payment_status = Order.PaymentStatusChoices.PENDING,
-        address_id = address,
+        address_id = address.id,
     )
     order.product_ids.set(product_ids)
     

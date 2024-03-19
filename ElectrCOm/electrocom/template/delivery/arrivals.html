@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedules</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css">
 </head>
 <body>
     {% block head %}
@@ -11,7 +12,7 @@
       <h1>Orders </h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item active">orders</li>
+          <li class="breadcrumb-item active">Dashboard/select Orders</li>
 
         </ol>
       </nav>
@@ -21,15 +22,30 @@
     {% block body %}
     
    
-      {% for address in unique_addresses %}
-      {% for order in order_products%}
-      <div class="card">
-           <h3 style="font-family: monospace; text-transform: uppercase;">{{order}},</h3> 
+    {% for address in unique_addresses %}
+    {% for order,products in order_products.items %}
+    {% if order.address == address %}
+
+    <div class="card">
+      <div class="row mt-2 mx-1">
+        <form action="" method="post" class="col-lg-12">
+          {% csrf_token%}
+          <div class="col-lg-8">
+            <h3 style="font-family: monospace; text-transform: uppercase;">{{ order }}</h3>
+            <h5 style="text-transform: capitalize;"> Address: {{ address }}, {{ address.locality }} {{ address.pincode }}</h5>
+          </div>
+          <div class="col-lg-4 mt-2">
+            
+            <button type="submit" class="btn btn-primary mb-3" style="color: #fff; background: rgb(61, 146, 61); font-weight:600 ; border: none;"><span style="color: #fff;">&#10003;</span>  Pickup</button>
             <br>
-              <h5 style="text-transform: capitalize;"> address: &nbsp;&nbsp;&nbsp;&nbsp;{{address}}, 
-                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{address.locality}} {{address.pincode}}</>
-              </div>
-          {%endfor%}
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  {% endfor %}
+  
           <!-- {%for order,product in order_products.items %}
             {%if order.address == address %}
                 {% for product in products%}
@@ -37,7 +53,6 @@
                   {%endfor%}
               {%endif%}
             {%endfor%} -->
-            {% endfor %}
 
     {% endblock body %}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

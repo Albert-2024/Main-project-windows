@@ -20,7 +20,7 @@
         </div>
     </div>
 </a>
-<a href="" class="col-lg-6 col-md-6 mb-4"  style="text-decoration: none;">
+<a href="{%url 'accepted'%}" class="col-lg-6 col-md-6 mb-4"  style="text-decoration: none;">
   <div class="card">
       <div class="card-body">
           <i class="bi bi-phone"></i>
@@ -71,7 +71,7 @@
   {% endblock home %}
   {% block select_orders %}
   <li class="nav-item">
-      <a class="nav-link " href="{% url 'arrivals' %}">
+      <a class="nav-link collapsed" href="{% url 'arrivals' %}">
       <i class="bi bi-card-list"></i>
       <span>Select Orders</span>
     </a>

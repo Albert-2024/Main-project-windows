@@ -302,7 +302,9 @@ class payment(models.Model):
     def carttotal(self):
         self.cartstock = self.product.stock
 
-
+class Accepted(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete = models.CASCADE)
+    
 
 
 
