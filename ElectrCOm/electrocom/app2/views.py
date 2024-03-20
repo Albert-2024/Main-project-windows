@@ -8,7 +8,7 @@ from django.urls import reverse
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
+from django.http import HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.db import transaction
@@ -216,27 +216,6 @@ def waiting(request):
 def delivery_index(request):
     user=request.user.id
     return render(request,'delivery/delivery_index.html')
-
-@login_required(login_url='/app2/login')
-def arrivals(request):
-    user=request.user
-    successfull_orders = Order.objects.filter(payment_status=Order.PaymentStatusChoices.SUCCESSFUL)
-    unique_addresses=[]
-    for order in successfull_orders:
-        if order.address:
-            if order.address not in unique_addresses:
-                unique_addresses.append(order.address)
-    order_products={}
-    for order in successfull_orders:
-        products = [item.product_name for item in order.items.all()]
-        order_products[order]=products    
-    context = {
-        'unique_addresses': unique_addresses,
-        'order_products': order_products
-    }
-    # print(order_products)
-
-    return render(request,'delivery/arrivals.html',context)
 
 
 @login_required(login_url='/app2/login')
@@ -770,6 +749,27 @@ def decrease_item(request, item_id):
 def get_user_address(user):
     return user
 
+@login_required(login_url='/app2/login')
+def arrivals(request):
+    user=request.user
+    successfull_orders = Order.objects.filter(payment_status=Order.PaymentStatusChoices.SUCCESSFUL)
+    unique_addresses=[]
+    for order in successfull_orders:
+        if order.address:
+            if order.address not in unique_addresses:
+                unique_addresses.append(order.address)
+    order_products={}
+    for order in successfull_orders:
+        products = [item.product_name for item in order.items.all()]
+        order_products[order]=products 
+    
+    context = {
+        'unique_addresses': unique_addresses,
+        'order_products': order_products
+    }
+    # print(order_products)
+
+    return render(request,'delivery/arrivals.html',context)
 
 @login_required(login_url='/app2/login/')
 def orders(request):
@@ -788,6 +788,7 @@ def orders(request):
 
     if not address:
         print("no address")
+        return redirect('')
 
     if is_empty:
         messages.warning(request,"Your cart is empty")
@@ -801,8 +802,7 @@ def orders(request):
         'total_quantity':total_quantity,
         'sub_total':sub_total,  
         'total_price': total_price,
-        'sum':added,
-        'address' : address
+        'sum':added
     }
     print(total_quantity)
 
@@ -815,29 +815,41 @@ def orders(request):
 
 def accepted(request):
     if request.method == 'POST':
-        address_id = request.POST.get('address_id')
         order_id = request.POST.get('order_id')
+        address_id = request.POST.get('address_id')
+        delivery_agent = request.user
+        # print(delivery_agent)
+
         try:
-           order = Order.objects.get(pk=order_id)
-           order.delivery_order_status='picked_up'
-
-           delivery,created = Delivery.objects.get_or_create(order=order)
-           delivery,picked_up_at = timezone.now()
-
-           order.save()
-           delivery.save()
-           messages.success(request,'Order successfully picked up')
-           print(messages.success(request,'Order successfully picked up'))
+            order = Order.objects.get(pk=order_id)
+            order.delivery_order_status = 'picked_up'
+            order.save()
+            delivery_instance, created = Delivery.objects.get_or_create(order=order, delivery_agent=delivery_agent)
+            if created:
+                delivery_instance.picked_up_at = timezone.now()
+                delivery_instance.save()
+            messages.success(request, 'Order successfully picked up')
         except Order.DoesNotExist:
-            messages.error(request,'Order not found')
-            print(messages.error(request,'Order not found'))
+            messages.error(request, 'Order not found')
         except Exception as e:
-            messages.error(request,f'an error occured: {e}')
-            print(messages.error(request,f'an error occured: {e}'))
-        return redirect('orders')
+            messages.error(request, f'An error occurred: {e}')
 
-    return render(request,'delivery/accepted.html')
+        return redirect('accepted')
+    else:
+        user=request.user
+        print("Current user: ",user)
+        try:
+            delivery_orders = Delivery.objects.filter(delivery_agent=user, picked_up_at__isnull=False)
+            print("Delivery Orders: ", delivery_orders)
+            
+        except Delivery.DoesNotExist:
+            delivery_orders = []
 
+        context={
+            'delivery_orders':delivery_orders
+        }
+
+    return render(request, 'delivery/accepted.html',context)
 
 @login_required(login_url='/app2/login/')
 def address(request):
@@ -928,7 +940,7 @@ def payment(request):
 def paymenthandler(request):
     print("paymenthandler")
     if request.method == "POST":
-            address_id = request.POST.get('address_id') 
+            address_id = request.POST.get('address_id','') 
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
             signature = request.POST.get('razorpay_signature', '')

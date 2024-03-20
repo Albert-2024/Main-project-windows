@@ -294,16 +294,13 @@ class Order(models.Model):
         ordering = ['-timestamp']
 
 class Delivery(models.Model):
-    order=models.ForeignKey(Order,on_delete = models.CASCADE)   
-    picked_up_at = models.DateTimeField(null=True,blank=True)
+    order=models.ForeignKey(Order,on_delete = models.CASCADE)  
+    picked_up_at = models.DateTimeField(null=True,blank=True,auto_now_add=True)
     delivered_at = models.DateTimeField(null=True,blank=True)
+    delivery_agent = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='delivery_assignments')
 
     def __str__(self):
         return f"Deliver for Order {self.order.id}"
-    def save(self, *args, **kwargs):
-        if not self.pk and not self.picked_up_at:
-            self.picked_up_at = timezone.now()
-        super().save(*args, **kwargs)
     
 class payment(models.Model):
     class PaymentStatusChoices(models.TextChoices):

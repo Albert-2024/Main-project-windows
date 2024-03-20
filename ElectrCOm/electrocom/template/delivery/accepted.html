@@ -20,7 +20,22 @@
     {%endblock head%}
     {%block body%}
       <div class="card">
-        
+        {% if delivery_orders %}
+      <h2>Picked Up Orders</h2>
+      <ul>
+        {% for order in delivery_orders %}
+          <li>{{ order.order }} - Picked Up At: {{ order.picked_up_at }}</li><br>
+          Address: {{order.order.address}} <br>{{order.order.address.locality}}, {{order.order.address.city}},{{order.order.address.pincode}}
+          {{order.order.address.state}},<br>
+          Phone: {{order.order.address.phone}}
+          
+
+
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No orders have been picked up yet.</p>
+    {% endif %}
       </div>
     {%endblock%}
 </body>
