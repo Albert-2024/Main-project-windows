@@ -1,3 +1,4 @@
+from time import timezone
 from urllib import request
 from django.conf import settings
 from django.db import models
@@ -257,6 +258,7 @@ class Address(models.Model):
     def __str__(self):
         return self.name + "-" + self.address
 
+
 class Order(models.Model):
     class PaymentStatusChoices(models.TextChoices):
         PENDING = 'pending', 'Pending'
@@ -273,6 +275,12 @@ class Order(models.Model):
     items = models.ManyToManyField(Cart)
     address = models.ForeignKey(Address,on_delete=models.CASCADE,null=True)
     product_ids = models.ManyToManyField(Product,related_name='orders')
+    delivery_order_status_choices = (
+        ('pending','Pending'),
+        ('picked_up','Picked Up'),
+        ('delivered','Delivered')
+    )
+    delivery_order_status = models.CharField(max_length=20,choices=delivery_order_status_choices,default='pending')
 
     @property
     def product_names(self):
@@ -284,6 +292,18 @@ class Order(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+
+class Delivery(models.Model):
+    order=models.ForeignKey(Order,on_delete = models.CASCADE)   
+    picked_up_at = models.DateTimeField(null=True,blank=True)
+    delivered_at = models.DateTimeField(null=True,blank=True)
+
+    def __str__(self):
+        return f"Deliver for Order {self.order.id}"
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.picked_up_at:
+            self.picked_up_at = timezone.now()
+        super().save(*args, **kwargs)
     
 class payment(models.Model):
     class PaymentStatusChoices(models.TextChoices):
@@ -301,13 +321,6 @@ class payment(models.Model):
     
     def carttotal(self):
         self.cartstock = self.product.stock
-
-class Accepted(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete = models.CASCADE)
-    
-
-
-
 
 
 class Book(models.Model):

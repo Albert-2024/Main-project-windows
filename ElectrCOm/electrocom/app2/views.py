@@ -8,7 +8,7 @@ from django.urls import reverse
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
+from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.db import transaction
@@ -16,7 +16,7 @@ from django.db import transaction
 
 from django.contrib  import messages,auth
 # from .models import Brand, Category, CustomUser, Product
-from .models import Address, CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile,Profile,SellerProfile
+from .models import Address, CustomUser, Order, Product, ProductHeadset, ProductLap, ProductMobile,Profile,SellerProfile,Delivery
 from .models import sellerRegistrationRequest, DeliveryRegistrationRequests,DeliveryProfile, ProductSpeaker,Cart, Wishlist
 # from accounts.backends import EmailBackend
 from django.contrib.auth import get_user_model
@@ -226,13 +226,10 @@ def arrivals(request):
         if order.address:
             if order.address not in unique_addresses:
                 unique_addresses.append(order.address)
-    print(unique_addresses)
     order_products={}
     for order in successfull_orders:
         products = [item.product_name for item in order.items.all()]
-        order_products[order]=products 
-        # print(products)  
-    print(order_products)    
+        order_products[order]=products    
     context = {
         'unique_addresses': unique_addresses,
         'order_products': order_products
@@ -784,8 +781,8 @@ def orders(request):
     added = total_price+60
     is_empty = not cart.exists()
     try:
-        address = Address.objects.get(user=request.user)
-        address_id = address.id
+        address = Address.objects.filter(user=request.user)
+        # address_id = address.id
     except Address.DoesNotExist:
         address=None
 
@@ -799,12 +796,13 @@ def orders(request):
     context = {
         'cart' : cart,
         'address':address,
-        'address_id':address_id,
+        # 'address_id':address_id,
         'product_name':product_name,
         'total_quantity':total_quantity,
         'sub_total':sub_total,  
         'total_price': total_price,
-        'sum':added
+        'sum':added,
+        'address' : address
     }
     print(total_quantity)
 
@@ -816,8 +814,30 @@ def orders(request):
     return render(request,'order.html',context)
 
 def accepted(request):
+    if request.method == 'POST':
+        address_id = request.POST.get('address_id')
+        order_id = request.POST.get('order_id')
+        try:
+           order = Order.objects.get(pk=order_id)
+           order.delivery_order_status='picked_up'
+
+           delivery,created = Delivery.objects.get_or_create(order=order)
+           delivery,picked_up_at = timezone.now()
+
+           order.save()
+           delivery.save()
+           messages.success(request,'Order successfully picked up')
+           print(messages.success(request,'Order successfully picked up'))
+        except Order.DoesNotExist:
+            messages.error(request,'Order not found')
+            print(messages.error(request,'Order not found'))
+        except Exception as e:
+            messages.error(request,f'an error occured: {e}')
+            print(messages.error(request,f'an error occured: {e}'))
+        return redirect('orders')
 
     return render(request,'delivery/accepted.html')
+
 
 @login_required(login_url='/app2/login/')
 def address(request):
@@ -908,7 +928,7 @@ def payment(request):
 def paymenthandler(request):
     print("paymenthandler")
     if request.method == "POST":
-            address_id = request.POST.get('address_id','') 
+            address_id = request.POST.get('address_id') 
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
             signature = request.POST.get('razorpay_signature', '')

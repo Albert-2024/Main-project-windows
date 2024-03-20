@@ -209,9 +209,11 @@
               
               <div class="card-body">
                 <form action="{%url 'payment' %}" method="post">
+                  {% for address in address %}
                   <input type="hidden" name="address_id" value="{{address.id}}">
               <h5>{{address.name}}</h5>
               <h6>{{address.address}},{{address.district}}, {{address.city}}, {{address.state}}</h6> 
+              {%endfor  %}
             </form>
             </div>
           </div>
