@@ -1,4 +1,5 @@
 from decimal import Decimal
+from io import BytesIO
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import login as auth_login ,authenticate, logout
 from django.shortcuts import render, redirect
@@ -8,7 +9,7 @@ from django.urls import reverse
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect,JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.db import transaction
@@ -978,8 +979,10 @@ def paymenthandler(request):
 
                     cart_items=Cart.objects.filter(user_id=request.user.id)
                     cart_items.delete()
+                
+            
                  
-                 return redirect('http://127.0.0.1:8000/')
+                 return redirect('receipt')
                 
             else:
  
@@ -989,6 +992,17 @@ def paymenthandler(request):
        
         return HttpResponseBadRequest()
 
+@login_required(login_url='/app2/login/')
+def receipt(request):
+  try:
+    orders = Order.objects.filter(user=request.user, payment_status=Order.PaymentStatusChoices.SUCCESSFUL)
+    context = {
+      'orders': orders,  # Pass all successful orders to the context
+    }
+    return render(request, 'receipt.html', context)
+  except ObjectDoesNotExist:
+    return render(request, 'failure.html')
+    
 
 
 # def product_search(request):

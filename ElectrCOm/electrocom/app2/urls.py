@@ -69,6 +69,8 @@ urlpatterns = [
     path('address/',views.address,name='address'),
     path('payment/',views.payment,name='payment'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    path('seller/login/',views.sellerlogin,name="sellerlogin"),
+    path('receipt/',views.receipt,name='receipt')
     # path('search/', include('haystack.urls')),
     # path('search/',views.product_search,name='product_search'),
     
@@ -76,7 +78,6 @@ urlpatterns = [
     # path('cart/',views.cart,name='cart'),
     # path('<str:category>/<int:product_id>/add_to_cart/', views.add_to_cart, name='add_to_cart'),
     
-    path('seller/login/',views.sellerlogin,name="sellerlogin"),
     # path('/delivery/register',views.sellerReg,name='deliveryReg'),
     # path('delivery/login/',views.login,name="deliverylogin"), 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

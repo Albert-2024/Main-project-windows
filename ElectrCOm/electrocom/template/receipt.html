@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-size: 16px;
+        }
+    
+        /* Style the header for a more prominent look */
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+    
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+    
+        /* Style the table for better readability */
+        table {
+            margin-top: 30px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+    
+        th, td {
+            padding: 12px 20px; /* Increased padding for spacing */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+    
+        th {
+            background-color: #f2f2f2;
+        }
+    
+        /* Style the list items for better separation */
+        ul.item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    
+        .item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+    
+        .item img {
+            max-width: 60px;
+            margin-right: 10px;
+        }
+    
+        /* Style the total price for emphasis */
+        .total-price {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    
+        .space {
+            margin-bottom: 10px;
+        }
+    
+        .header2 {
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+        }
+    
+        a {
+            text-decoration: none;
+        }
+    
+        /* Set fixed column widths */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Receipt for Purchases</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date & Time</th>
+                <th>Item</th>
+                <th>Delivery</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if orders %}
+            {% for order in orders %}
+                <tr>
+                    <td>{{order.id}}</td>
+                    <td>{{ order.timestamp }}</td>
+                    <td>
+                        <ul class="item-list">
+                            {% for product in order.product_ids.all %}
+                                <li class="item">
+                                    <table border="1px">
+                                        <tr><td><span class="product-name">{{ product.name }}</span></td></tr>
+                                        <tr><td><span class="product-price">Rs. {{ product.price }}</span></td></tr>
+                                    </table>
+                                </li>
+                                {% endfor %}
+                               
+                            </ul>
+                    </td>
+                    <td>Rs. 60</td>
+                    <td>Rs. {{order.amount}} </td>
+                </tr>
+             
+            {% endfor %}
+            {%endif%}
+        </tbody>
+    </table>
+</body>
+</html>
