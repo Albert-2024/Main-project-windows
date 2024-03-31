@@ -70,7 +70,8 @@ urlpatterns = [
     path('payment/',views.payment,name='payment'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('seller/login/',views.sellerlogin,name="sellerlogin"),
-    path('receipt/',views.receipt,name='receipt')
+    path('receipt/',views.receipt,name='receipt'),
+    path('download-receipt/', views.download_receipt, name='download_receipt'),
     # path('search/', include('haystack.urls')),
     # path('search/',views.product_search,name='product_search'),
     

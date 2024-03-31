@@ -28,26 +28,29 @@ class Hosttest(TestCase):
         driver.maximize_window()
         time.sleep(1)
 
+        user_btn = driver.find_element(By.CSS_SELECTOR,'#user-btn')
+        user_btn.click()
+        time.sleep(2)
         Register = driver.find_element(By.CSS_SELECTOR, "a#cust_login")
         Register.click()
         time.sleep(2)
         
-        # Test 1
+        # Registration functionality 0
         
         # Register_btn = driver.find_element(By.CSS_SELECTOR, "#register-button")
         # Register_btn.click()
         # time.sleep(2)
 
         # user_fname = driver.find_element(By.CSS_SELECTOR, "input#first_name")
-        # user_fname.send_keys("Ramanan")
+        # user_fname.send_keys("Joel")
         # user_lname = driver.find_element(By.CSS_SELECTOR, "input#last_name")
-        # user_lname.send_keys("K M ")
+        # user_lname.send_keys("Joy ")
         # email = driver.find_element(By.CSS_SELECTOR, "input#email")
-        # email.send_keys("ramanan234@gmail.com")
+        # email.send_keys("joel234@gmail.com")
         # password = driver.find_element(By.CSS_SELECTOR, "input#password")
-        # password.send_keys("Ramn@123")
+        # password.send_keys("Joel@123")
         # cpassword = driver.find_element(By.CSS_SELECTOR, "input#confirmPassword")
-        # cpassword.send_keys("Ramn@123")
+        # cpassword.send_keys("Joel@123")
         
         
         # submitreg = driver.find_element(By.CSS_SELECTOR, "button#reg_btn")
@@ -56,17 +59,18 @@ class Hosttest(TestCase):
         
         #end
 
-        username = driver.find_element(By.CSS_SELECTOR, "input#typeEmailX-2")
-        username.send_keys("ramanan234@gmail.com")
-        password = driver.find_element(By.CSS_SELECTOR, "input#typePasswordX-2")
-        password.send_keys("Ramn@123")
-        time.sleep(1)
-        submitc = driver.find_element(By.CSS_SELECTOR, "button#submit")
-        submitc.click()
-        time.sleep(2)
+        #ordinary user login
+        # username = driver.find_element(By.CSS_SELECTOR, "input#typeEmailX-2")
+        # username.send_keys("joel234@gmail.com")
+        # password = driver.find_element(By.CSS_SELECTOR, "input#typePasswordX-2")
+        # password.send_keys("Joel@123")
+        # time.sleep(1)
+        # submitc = driver.find_element(By.CSS_SELECTOR, "button#submit")
+        # submitc.click()
+        # time.sleep(2)
         
-        #test 1
-        # drop = driver.find_element(By.CSS_SELECTOR,"a#drop")
+        #   update profile functionality 1
+        # drop = driver.find_element(By.CSS_SELECTOR,"a#user-btn")
         # drop.click()
         # profile = driver.find_element(By.CSS_SELECTOR,"a#profile")
         # profile.click()
@@ -85,32 +89,53 @@ class Hosttest(TestCase):
         # time.sleep(3)
         # updatep = driver.find_element(By.CSS_SELECTOR, "button#update-profile")
         # updatep.click()
+        # time.sleep(3)
+        # print('success')
         
         #end
 
-        #test 2
-        product = driver.find_element(By.CSS_SELECTOR, "a#products")
-        product.click()
-        time.sleep(2) 
-        moreproduct = driver.find_element(By.CSS_SELECTOR, "button#more")
-        moreproduct.click()
-        time.sleep(2)
-        driver.execute_script("window.scrollBy(0, 500);")
-        time.sleep(5)
-        all = driver.find_element(By.CSS_SELECTOR, "a#all")
-        all.click()
-        time.sleep(3) 
+        #view more functionality 2
+        # product = driver.find_element(By.CSS_SELECTOR, "a#products")
+        # product.click()
+        # time.sleep(2) 
+        # moreproduct = driver.find_element(By.CSS_SELECTOR, "button#more")
+        # moreproduct.click()
+        # time.sleep(2)
+        # driver.execute_script("window.scrollBy(0, 500);")
+        # time.sleep(5)
+        # all = driver.find_element(By.CSS_SELECTOR, "a#all")
+        # all.click()
+        # time.sleep(3) 
         
-        print("Test Done")
+        # print("Test Done")
         
         #end
         
-        #test 3
-        product = driver.find_element(By.CSS_SELECTOR, "a#products")
-        product.click()
-        time.sleep(2) 
-        cart = driver.find_element(By.CSS_SELECTOR, "button#cart")
-        cart.click()
-        time.sleep(2)
+        #cart functionality 3
+        # product = driver.find_element(By.CSS_SELECTOR, "a#products")
+        # product.click()
+        # time.sleep(2) 
+        # cart = driver.find_element(By.CSS_SELECTOR, "button#cart")
+        # cart.click()
+        # time.sleep(2)
         
-    
+
+        # delivery agent
+        username = driver.find_element(By.CSS_SELECTOR, "input#typeEmailX-2")
+        username.send_keys("don2@gmail.com")
+        password = driver.find_element(By.CSS_SELECTOR, "input#typePasswordX-2")
+        password.send_keys("Don@1234")
+        time.sleep(1)
+        submitc = driver.find_element(By.CSS_SELECTOR, "button#submit")
+        submitc.click()
+        time.sleep(2)
+
+        #select order functionality 4
+        select_order = driver.find_element(By.CSS_SELECTOR,"a#select_orders")
+        select_order.click()
+        time.sleep(2)
+        dashboard=driver.find_element(By.CSS_SELECTOR,"a#dashboard")
+        dashboard.click()
+        pickup=driver.find_element(By.CSS_SELECTOR,"h5#accepted")
+        pickup.click()
+        time.sleep(2)

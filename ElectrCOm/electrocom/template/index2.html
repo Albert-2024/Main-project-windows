@@ -42,7 +42,7 @@
                 <a class="nav-link me-4" href="#company-services">Services</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link me-4 " href='{% url "allproducts" %}'>
+                <a id="products" class="nav-link me-4 " href='{% url "allproducts" %}'>
                   Products
                 </a>
                
@@ -101,22 +101,23 @@
 
                     <li>
                       <div class="dropdown pe-3 mt-1" >
-                        <a href="" class="dropdown dropdown-toggle" data-bs-toggle="dropdown">
+                        <a id="user-btn" href="" class="dropdown dropdown-toggle" data-bs-toggle="dropdown">
                           <i class="fa-solid fa-user ms-3 "></i>
                         </a>
                         {% if user.is_authenticated %}
                            {{user.first_name}}
                           <div class="dropdown-menu" style="margin-left: -90px;">
-                            <a href='{% url "profile" %}' class="dropdown-item">Profile</a>
+                            <a id="profile" href='{% url "profile" %}' class="dropdown-item">Profile</a>
                             <a href="{% url 'sellerreg' %}" class="dropdown-item nav-linkd text-decoration-none">Become a seller</a>
                             <a href="{%url 'cart'%}" class="dropdown-item nav-linkd">Cart</a>
+                            <a href="{%url 'receipt'%}" class="dropdown-item nav-linkd">Orders</a>
                             <a href="{%url 'wishlist' %}" class="dropdown-item nav-linkd ">Wishlist</a>
                             <a href="{% url 'userLogout' %}" class="dropdown-item nav-linkd">Logout</a>
                           </div>
 
                         {% else %}
                         <div class="dropdown-menu">
-                          <a href='{%url "login"%}'>Login</a>
+                          <a id="cust_login" href='{%url "login"%}'>Login</a>
                         </div>
                         {% endif %}
 

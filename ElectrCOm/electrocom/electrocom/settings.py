@@ -65,8 +65,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google', 
     'haystack',
     'delivery_app',
-    
-
+    'django_pdfkit',
 
 ]
 HAYSTACK_SIGNAL_PROCESSOR='haystack.signals.RealtimeSignalProcessor'

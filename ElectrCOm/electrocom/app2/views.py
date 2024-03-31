@@ -13,6 +13,10 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedire
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.db import transaction
+from django_pdfkit import PDFView
+# from django_pdfkit import PDFResponse
+import pdfkit
+# from django_pdfkit import PDFKit
 # from .forms import ProductForm,SpecificationForm
 
 from django.contrib  import messages,auth
@@ -23,6 +27,7 @@ from .models import sellerRegistrationRequest, DeliveryRegistrationRequests,Deli
 from django.contrib.auth import get_user_model
 #from .forms import UserForm, ServiceForm 
 from django.db.models import Q,Sum
+from django.core.exceptions import ObjectDoesNotExist 
 
 User = get_user_model()
 
@@ -241,9 +246,6 @@ def delivery_profile(request):
         print("Profile updated successfully")
 
     return render(request, 'delivery/deliveryProfile.html', {'all': data, 'profile': profile})
-
-
-from django.core.exceptions import ObjectDoesNotExist 
 
 def sellerProfile(request):
     user = request.user
@@ -992,6 +994,15 @@ def paymenthandler(request):
        
         return HttpResponseBadRequest()
 
+class ReceiptPDFView(PDFView):
+    template_name='receipt.html'
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['orders']=Order.objects.all()
+        return context
+
+
 @login_required(login_url='/app2/login/')
 def receipt(request):
   try:
@@ -999,11 +1010,30 @@ def receipt(request):
     context = {
       'orders': orders,  # Pass all successful orders to the context
     }
+    html_content = render_to_string('receipt.html', context)
     return render(request, 'receipt.html', context)
   except ObjectDoesNotExist:
     return render(request, 'failure.html')
-    
 
+@login_required(login_url='/app2/login/')
+def download_receipt(request):
+    try:
+        orders = Order.objects.filter(user=request.user, payment_status=Order.PaymentStatusChoices.SUCCESSFUL)
+        context = {
+        'orders': orders,  # Pass all successful orders to the context
+        }
+        html_content = render_to_string('receipt.html', context)
+        pdf_file_path = settings.MEDIA_ROOT / 'receipt.pdf'
+        # pdfkit = PDFKit(html_content, 'string')
+        # pdfkit.to_file(pdf_file_path)
+
+        # Serve the PDF file for download
+        with open(pdf_file_path, 'rb') as pdf_file:
+            response = HttpResponse(pdf_file.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename=receipt.pdf'
+        return response
+    except ObjectDoesNotExist:
+        return HttpResponse("No successful orders found.")
 
 # def product_search(request):
 #     query = request.GET.get('q')

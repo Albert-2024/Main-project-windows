@@ -96,6 +96,7 @@
                 <th>Item</th>
                 <th>Delivery</th>
                 <th>Total Price</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -119,6 +120,12 @@
                     </td>
                     <td>Rs. 60</td>
                     <td>Rs. {{order.amount}} </td>
+                    <td>{{order.delivery_order_status}} &nbsp;&nbsp; delivery
+                    <form action="{% url 'download_receipt' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Download Receipt</button>
+                    </form>
+                </td>
                 </tr>
              
             {% endfor %}
