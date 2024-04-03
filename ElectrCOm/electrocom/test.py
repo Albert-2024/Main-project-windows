@@ -55,6 +55,7 @@ class Hosttest(TestCase):
         
         # submitreg = driver.find_element(By.CSS_SELECTOR, "button#reg_btn")
         # submitreg.click()
+        # print("Registration completed !!!!!!!!!!")
         # time.sleep(2)
         
         #end
@@ -118,6 +119,7 @@ class Hosttest(TestCase):
         # cart = driver.find_element(By.CSS_SELECTOR, "button#cart")
         # cart.click()
         # time.sleep(2)
+        # print("cart completed!!!!!!")
         
 
         # delivery agent

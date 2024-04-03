@@ -63,20 +63,12 @@ INSTALLED_APPS = [
     'allauth.account', 
     'allauth.socialaccount', 
     'allauth.socialaccount.providers.google', 
-    'haystack',
     'delivery_app',
     'django_pdfkit',
 
 ]
-HAYSTACK_SIGNAL_PROCESSOR='haystack.signals.RealtimeSignalProcessor'
 
-HAYSTACK_CONNECTIONS={
-    'default':{
-        'ENGINE':'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
-        'URL':'http://127.0.0.1:9200/',
-        'INDEX_NAME':'haystack'
-    }
-}
+
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
