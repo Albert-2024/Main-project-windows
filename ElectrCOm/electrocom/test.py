@@ -141,3 +141,5 @@ class Hosttest(TestCase):
         pickup=driver.find_element(By.CSS_SELECTOR,"h5#accepted")
         pickup.click()
         time.sleep(2)
+
+#this is to check testing
