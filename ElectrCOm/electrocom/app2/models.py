@@ -126,8 +126,6 @@ class SellerProfile(models.Model):
     def __str__(self):
         return self.user.email
     
-
-    
 class Product(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255, null=True)
@@ -318,8 +316,7 @@ class payment(models.Model):
     
     def carttotal(self):
         self.cartstock = self.product.stock
-
-
+        
 class Book(models.Model):
     title=models.CharField(max_length=100,unique=True)
     slug = models.SlugField(unique=True)

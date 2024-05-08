@@ -25,7 +25,7 @@
     
         /* Style the table for better readability */
         table {
-            margin-top: 30px;
+            margin-top: 15px;
             border-collapse: collapse;
             width: 100%;
         }
@@ -91,6 +91,12 @@
     <table>
         <thead>
             <tr>
+                <br>
+            <button>
+                <a href="{% url "delivery_index" %}">Home</a>
+            </button>
+            </tr>
+            <tr>
                 <th>Order ID</th>
                 <th>Date & Time</th>
                 <th>Item</th>
@@ -120,11 +126,11 @@
                     </td>
                     <td>Rs. 60</td>
                     <td>Rs. {{order.amount}} </td>
-                    <td>{{order.delivery_order_status}} &nbsp;&nbsp; delivery
-                    <form action="{% url 'download_receipt' %}" method="post">
+                    <td>{{order.delivery_order_status}} &nbsp;&nbsp;
+                    <!-- <form action="{% url 'download_receipt' %}" method="post">
                         {% csrf_token %}
                         <button type="submit">Download Receipt</button>
-                    </form>
+                    </form> -->
                 </td>
                 </tr>
              

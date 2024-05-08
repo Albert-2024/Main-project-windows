@@ -119,25 +119,18 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link collapsed" href="{% url 'sellerDashboard' %}">
           <i class="bi bi-grid"></i>
           <span>Add products</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed"  href="{% url "sellerprofile" %}">
+        <a class="nav-link collapsed"  href="{% url 'sellerprofile' %}">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
       </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
-        </a>
-      </li>
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
@@ -185,8 +178,8 @@
       <h1>Add products</h1>
       <nav>
         <ol class="breadcrumb">
-
           <li class="breadcrumb-item active">Add products</li>
+
         </ol>
       </nav>
     </div><!-- End Page Title -->
